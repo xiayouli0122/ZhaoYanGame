@@ -1,5 +1,7 @@
 package com.zhaoyan.game;
 
+import com.zhaoyan.game.killer.KillerGameActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,8 +50,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.game_killer:
-			showToast("game_killer");
-			//you can call openActivity(Class<?> class); 
+			openActivity(KillerGameActivity.class);
 			break;
 		case R.id.game_spy:
 			showToast("game_spy");

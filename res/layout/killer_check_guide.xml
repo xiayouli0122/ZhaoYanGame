@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="58.0dip"
+     >
+
+    <TextView
+        android:id="@+id/judge_lines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/killer_judge_words" />
+
+    <LinearLayout
+        android:id="@+id/killer_process"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/judge_lines"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/close_eye"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25.0dip" >
+
+            <ImageView
+                android:id="@+id/eyes_close_drak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/killer_policeman_open_eyes" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/open_eye"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25.0dip" >
+
+            <ImageView
+                android:id="@+id/eyes_open_killer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/killer_policeman_check" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_check_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/killer_process"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25.0dip"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/killer_btn_check" />
+
+</RelativeLayout>

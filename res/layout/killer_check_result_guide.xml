@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="68.0dip"
+    android:visibility="visible" >
+
+    <ImageView
+        android:id="@+id/judge_lines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/killer_judge_words" />
+
+    <LinearLayout
+        android:id="@+id/killer_process"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/judge_lines"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/close_eye"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10.0dip" >
+
+            <ImageView
+                android:id="@+id/tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/killer_tips" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/open_eye"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10.0dip" >
+
+            <ImageView
+                android:id="@+id/police_please_close_eyes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/killer_dawn" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_to_kill_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/killer_process"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10.0dip"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/killer_continue_btn" />
+
+</RelativeLayout>

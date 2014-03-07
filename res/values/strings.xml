@@ -4,5 +4,10 @@
     <string name="app_name">JuYouGame</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="killer_tip_one">长按选择要杀的人</string>
+    <string name="killer_tip_two">点击选择要验的人</string>
+    <string name="police">警察</string>
+    <string name="killer">杀手</string>
+    <string name="civilian">平民</string>
 
 </resources>

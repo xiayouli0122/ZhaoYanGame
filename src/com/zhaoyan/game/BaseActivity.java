@@ -3,6 +3,8 @@ package com.zhaoyan.game;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 public class BaseActivity extends Activity {
@@ -16,6 +18,11 @@ public class BaseActivity extends Activity {
 	
 	protected void showToast(String msg){
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+	}
+	
+	protected void setAnimation(View view, int redId){
+		view.clearAnimation();
+		view.setAnimation(AnimationUtils.loadAnimation(getApplicationContext(), redId));
 	}
 
 

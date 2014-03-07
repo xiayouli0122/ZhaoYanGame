@@ -2,5 +2,7 @@
 <resources>
     
     <color name="white">#ffffffff</color>
+    <color name="black">#ff000000</color>
     <color name="list_hide">#ff0c2c5c</color>
+    <color name="killer_phrase_tip">#ffbf7f0e</color>
 </resources>

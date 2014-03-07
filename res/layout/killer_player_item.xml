@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView
+        android:id="@+id/iv_player_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/avatar_bg" />
+
+    <ImageView
+        android:id="@+id/iv_player_photo"
+        android:layout_width="60.0dip"
+        android:layout_height="60.0dip"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/app_name" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/iv_player_frame"
+        android:layout_alignTop="@id/iv_player_frame"
+         >
+
+        <ImageView
+            android:id="@+id/iv_killer_num_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/killer_number_red" />
+
+        <TextView
+            android:id="@+id/tv_killer_number"
+            style="@style/KillerNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="5" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_killer_identity"
+        style="@style/KillerIdentity"
+        android:layout_width="60.0dip"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/iv_player_frame"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/killer_id_bg"
+        android:gravity="bottom|center" 
+        android:visibility="visible"
+        android:text="player2"
+        />
+
+</RelativeLayout>

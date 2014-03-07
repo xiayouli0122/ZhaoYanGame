@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="58.0dip"
+    >
+
+    <ImageView
+        android:id="@+id/iv_judge_lines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/killer_judge_words" />
+
+    <LinearLayout
+        android:id="@+id/killer_process"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_judge_lines"
+        android:layout_marginTop="28.0dip"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/eyes_close_drak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/killer_close_eyes" />
+
+        <ImageView
+            android:id="@+id/eyes_open_killer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="28.0dip"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/killer_killer_open_eyes" />
+
+        <ImageView
+            android:id="@+id/textview_killer_anyone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="28.0dip"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/killer_kill_one" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_killer_ensure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/killer_process"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28.0dip"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/killer_btn_start_kill" />
+
+</RelativeLayout>

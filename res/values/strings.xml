@@ -17,5 +17,10 @@
     
     <string name="killer_person_status">%1$d号是%2$s,有遗言</string>
     <string name="killer_person_no_status">%1$d号是%2$s,没有遗言</string>
+    <string name="people_number">5人</string>
+    <string name="killer_number">杀手1人</string>
+    <string name="police_number">警察1人</string>
+    <string name="person_number">平民3人</string>
+    
 
 </resources>

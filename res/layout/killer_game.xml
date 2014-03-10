@@ -5,15 +5,6 @@
     android:layout_height="fill_parent"
     android:background="@drawable/killer_bg_start" >
 
-        <ImageView
-            android:id="@+id/iv_finish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/killer_photo_finish"
-            android:visibility="visible" />
-
     <RelativeLayout
         android:id="@+id/killer_game_footer"
         android:layout_width="fill_parent"
@@ -59,6 +50,11 @@
         android:src="@drawable/killer_spider"
         android:visibility="gone" />
     
+    <include 
+        android:id="@+id/kill_init"
+        layout="@layout/killer_first_layout"
+        />
+    
     <include
         android:id="@+id/kill_content"
         layout="@layout/killer_draw_content"
@@ -86,6 +82,12 @@
     <include
         android:id="@+id/kill_result_first"
         layout="@layout/killer_kill_result_guide_first"
+        android:visibility="invisible"
+         />
+    
+    <include
+        android:id="@+id/kill_check_userinfo"
+        layout="@layout/killer_check_userinfo"
         android:visibility="invisible"
          />
 

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/iv_start_deal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/btn_killer_startgame"
+        />
+
+    <TextView
+        android:id="@+id/tv_police_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/iv_start_deal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dip"
+        android:text="@string/police_number"
+        android:textColor="#ffd700"
+        android:textSize="15sp" />
+
+    <SeekBar
+        android:padding="10dip"
+        android:id="@+id/bar_set_player"
+        android:layout_width="320dip"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_killer_num"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dip"
+        android:max="11"
+        android:progressDrawable="@drawable/seekbar_img"
+        android:thumb="@drawable/killer_num_bar_point" />
+
+    <TextView
+        android:id="@+id/tv_total_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bar_set_player"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dip"
+        android:background="@drawable/killer_people_num_bg"
+        android:gravity="center"
+        android:text="@string/people_number"
+        android:textColor="#ffd700"
+        android:textSize="25sp" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_total_num"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dip"
+        android:src="@drawable/killer_people_num_setting" />
+
+    <TextView
+        android:id="@+id/tv_civilian_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/iv_start_deal"
+        android:layout_marginBottom="15dip"
+        android:layout_toRightOf="@+id/imageView1"
+        android:text="@string/person_number"
+        android:textColor="#ffd700"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_killer_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_police_num"
+        android:layout_alignBottom="@+id/tv_police_num"
+        android:layout_toLeftOf="@+id/imageView1"
+        android:text="@string/killer_number"
+        android:textColor="#ffd700"
+        android:textSize="15sp" />
+</RelativeLayout>

@@ -1,5 +1,7 @@
 package com.zhaoyan.game.killer;
 
+import android.graphics.Bitmap;
+
 import com.zhaoyan.game.util.Constants.Killers;
 
 /**player for killer  game*/
@@ -13,6 +15,9 @@ public class KPlayer {
 	private boolean isDead;
 	//checked or not
 	private boolean isChecked;
+	
+	//player icon
+	private Bitmap headIcon;
 	
 	public KPlayer(int number){
 		this.number = number;
@@ -55,4 +60,14 @@ public class KPlayer {
 	public void setChecked(boolean isChecked){
 		this.isChecked = isChecked;
 	}
+	
+	public Bitmap getHeadIcon(){
+		return headIcon;
+	}
+	
+	
+	public void setHeadIcon(Bitmap iconBitmap){
+		headIcon = iconBitmap;
+	}
+	
 }

@@ -62,6 +62,11 @@ public class KillerGameActivity extends BaseActivity implements
 	//Killer check guide resule
 	private View mCheckGuideResultView;
 	private ImageView mContinueBtn;
+	
+	//killer result guide first view
+	private View mResultGuideFirstView;
+	private ImageView mVoteBtn;
+	private TextView mDeadStatusFirstTV;
 
 	// bottom view
 	private RelativeLayout mBottomView;
@@ -228,6 +233,11 @@ public class KillerGameActivity extends BaseActivity implements
 		mCheckGuideResultView = findViewById(R.id.check_result);
 		mContinueBtn = (ImageView) findViewById(R.id.iv_to_kill_result);
 		mContinueBtn.setOnClickListener(this);
+		
+		mResultGuideFirstView = findViewById(R.id.kill_result_first);
+		mVoteBtn = (ImageView) findViewById(R.id.iv_to_vote);
+		mVoteBtn.setOnClickListener(this);
+		mDeadStatusFirstTV = (TextView) findViewById(R.id.tv_dead_status_first);
 	}
 
 	@Override
@@ -337,15 +347,15 @@ public class KillerGameActivity extends BaseActivity implements
 			player = mPlayerLists.get(i);
 			if (i == position) {
 				player.setDead(true);
+				mPlayerAdapter.notifyDataSetChanged();
 				if (Killers.Police == player.getIdentity()) {
 					//If killer killed police
 					//judge police count
 					if (0 == getPlayerCount(Killers.Police)) {
 						//game over,killer win
+						
 					} 
 					//going on
-					mPlayerAdapter.notifyDataSetChanged();
-					
 					mHandler.sendEmptyMessageDelayed(MSG_CHECK_GUIDE, 1000);
 				} else if (Killers.Cilivian == player.getIdentity()) {
 					//If killer killed civilian

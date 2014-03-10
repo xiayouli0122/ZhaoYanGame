@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="58.0dip"
+     >
+
+    <ImageView
+        android:id="@id/judge_lines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/killer_judge_words" />
+
+    <LinearLayout
+        android:id="@+id/killer_say_last_words"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/judge_lines"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/say_last_words_first"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25.0dip" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/killer_words_back" />
+
+            <TextView
+                android:id="@+id/tv_dead_status_first"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12.0dip"
+                android:text="@string/player_dead"
+                android:textColor="@color/white"
+                android:textSize="16.0sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/say_last_words_second"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25.0dip" >
+
+            <ImageView
+                android:id="@+id/dead_start_speech"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/killer_speak" />
+
+            <ImageView
+                android:id="@+id/iv_to_vote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/dead_start_speech"
+                android:layout_alignRight="@id/dead_start_speech"
+                android:layout_below="@id/dead_start_speech"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="28.0dip"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/killer_btn_vote" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

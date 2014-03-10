@@ -9,5 +9,13 @@
     <string name="police">警察</string>
     <string name="killer">杀手</string>
     <string name="civilian">平民</string>
+    <string name="player_dead">%1$d号死了，有遗言</string>
+    <string name="one_police_tip">%1$d号是警察</string>
+    <string name="two_police_tips">%1$d号和%2$d号是警察</string>
+    <string name="three_police_tips">%1$d号和%2$d号和%3$d号是警察</string>
+    <string name="four_police_tips">%1$d号和%2$d号和%3$d号和%4$d号是警察</string>
+    
+    <string name="killer_person_status">%1$d号是%2$s,有遗言</string>
+    <string name="killer_person_no_status">%1$d号是%2$s,没有遗言</string>
 
 </resources>

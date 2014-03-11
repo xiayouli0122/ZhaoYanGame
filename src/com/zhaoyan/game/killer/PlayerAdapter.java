@@ -6,6 +6,7 @@ import java.util.List;
 import com.zhaoyan.game.R;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,22 +16,22 @@ import android.widget.TextView;
 
 public class PlayerAdapter extends BaseAdapter {
 	private static final String TAG = "PlayerAdapter";
-	
+
 	private LayoutInflater mInflater;
 	private List<KPlayer> mDataList = new ArrayList<KPlayer>();
-	
+
 	private boolean mShowId = false;
-	
+
 	public PlayerAdapter(Context context, List<KPlayer> data) {
 		mDataList = data;
 		mInflater = LayoutInflater.from(context);
 	}
-	
-	public void setShowId(boolean show){
+
+	public void setShowId(boolean show) {
 		mShowId = show;
 		notifyDataSetChanged();
 	}
-	
+
 	@Override
 	public int getCount() {
 		return mDataList.size();
@@ -49,17 +50,22 @@ public class PlayerAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = mInflater.inflate(R.layout.killer_player_item, null);
-		ImageView photoView = (ImageView) view.findViewById(R.id.iv_player_photo);
-		photoView.setImageResource(R.drawable.default_killer_03);
-		ImageView numBgView = (ImageView) view.findViewById(R.id.iv_killer_num_bg);
-		TextView numberView = (TextView) view.findViewById(R.id.tv_killer_number);
+		ImageView photoView = (ImageView) view
+				.findViewById(R.id.iv_player_photo);
+		ImageView numBgView = (ImageView) view
+				.findViewById(R.id.iv_killer_num_bg);
+		TextView numberView = (TextView) view
+				.findViewById(R.id.tv_killer_number);
 		numberView.setText(mDataList.get(position).getNumber() + "");
 		TextView idView = (TextView) view.findViewById(R.id.tv_killer_identity);
-		
 		KPlayer player = mDataList.get(position);
+		if (player.getHeadIcon() == null)
+			photoView.setImageResource(R.drawable.default_killer_03);
+		else
+			photoView.setImageBitmap(player.getHeadIcon());
 		boolean isDead = player.isDead();
 		boolean isChecked = player.isChecked();
-		switch(player.getIdentity()){
+		switch (player.getIdentity()) {
 		case Police:
 			idView.setText(R.string.police);
 			if (isDead) {
@@ -93,8 +99,9 @@ public class PlayerAdapter extends BaseAdapter {
 		default:
 			break;
 		}
-		
-		idView.setVisibility(mShowId || isDead || isChecked ? View.VISIBLE : View.INVISIBLE);
+
+		idView.setVisibility(mShowId || isDead || isChecked ? View.VISIBLE
+				: View.INVISIBLE);
 		return view;
 	}
 

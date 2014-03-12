@@ -91,18 +91,20 @@
         android:visibility="invisible"
          />
 
-<!--     <include -->
-<!--         android:id="@+id/kill_result_second" -->
-<!--         layout="@layout/killer_kill_result_guide_second" /> -->
+    <include
+        android:id="@+id/kill_result_second"
+        layout="@layout/killer_kill_result_guide_second"
+        android:visibility="invisible"
+         />
 
-<!--     <include -->
-<!--         android:id="@+id/killer_over" -->
-<!--         layout="@layout/killer_over" -->
-<!--         android:visibility="gone" /> -->
+    <include
+        android:id="@+id/killer_over"
+        layout="@layout/killer_over"
+        android:visibility="gone" />
 
-<!--     <include -->
-<!--         android:id="@+id/killer_win" -->
-<!--         layout="@layout/killer_win" -->
-<!--         android:visibility="gone" /> -->
+    <include
+        android:id="@+id/killer_win"
+        layout="@layout/killer_win"
+        android:visibility="gone" />
 
 </RelativeLayout>

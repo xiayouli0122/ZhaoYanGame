@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="58.0dip"
+    >
+
+    <ImageView
+        android:id="@+id/judge_lines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/killer_judge_words" />
+
+    <RelativeLayout
+        android:id="@+id/dead_status"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/judge_lines"
+        android:layout_marginTop="38.0dip" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/killer_words_back" />
+
+        <TextView
+            android:id="@+id/tv_dead_status_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12.0dip"
+            android:text="@string/killer_person_no_status"
+            android:textColor="@color/white"
+            android:textSize="16.0sp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/btn_next_step"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dead_status"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38.0dip"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/killer_btn_next" />
+
+</RelativeLayout>

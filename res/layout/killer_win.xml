@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/killer_win_bg" >
+
+    <LinearLayout
+        android:id="@+id/killer_win_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" />
+
+    <ImageView
+        android:id="@+id/win_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/killer_win_brand" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/win_tips"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5.0dip" >
+
+        <TextView
+            android:id="@+id/tv_police_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:textSize="20.0sp" />
+
+        <ImageView
+            android:id="@+id/sec_killer_punish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_police_tips"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5.0dip"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/common_drawable_punish" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/killer_footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/killer_win_house_bg" />
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10.0dip"
+        android:paddingLeft="10.0dip"
+        android:paddingRight="10.0dip" >
+
+        <ImageView
+            android:id="@+id/sec_btn_tokiller"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/common_drawable_back" />
+
+        <ImageView
+            android:id="@+id/sec_btn_restart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/common_drawable_restart" />
+
+        <ImageView
+            android:id="@+id/sec_btn_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/common_btn_share" />
+    </RelativeLayout>
+
+</RelativeLayout>

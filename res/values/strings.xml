@@ -6,6 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="killer_tip_one">长按选择要杀的人</string>
     <string name="killer_tip_two">点击选择要验的人</string>
+    <string name="killer_tip_vote">长按选择要票的人</string>
     <string name="police">警察</string>
     <string name="killer">杀手</string>
     <string name="civilian">平民</string>
@@ -21,6 +22,15 @@
     <string name="killer_number">杀手1人</string>
     <string name="police_number">警察1人</string>
     <string name="person_number">平民3人</string>
+    
+    <string name="transfer_to_next">传给下一个人</string>
+    <string name="complete">完成</string>
+    <string name="n_number">%1$d号</string>
+    <string name="n_check_indetity">%1$d号查看身份</string>
+    <string name="n_people">%1$d人</string>
+    <string name="n_killer">杀手 %1$d 人</string>
+    <string name="n_police">警察 %1$d 人</string>
+    <string name="n_civilian">平民 %1$d 人</string>
     
 
 </resources>

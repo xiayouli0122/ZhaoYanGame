@@ -8,9 +8,9 @@ import java.util.Random;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
@@ -18,15 +18,14 @@ import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
-import android.text.Layout;
-import android.view.KeyEvent;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -34,7 +33,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -45,11 +43,10 @@ import android.widget.Toast;
 
 import com.zhaoyan.game.BaseActivity;
 import com.zhaoyan.game.R;
-import com.zhaoyan.game.R.id;
 import com.zhaoyan.game.util.Log;
 import com.zhaoyan.game.util.Constants.Killers;
 
-//police:警察   killer:杀手  civilian:平民
+//police:警察   killer:杀手  civilian:平民 identity:身份
 public class KillerGameActivity extends BaseActivity implements
 		OnClickListener, OnTouchListener, OnItemLongClickListener,
 		OnItemClickListener, OnSeekBarChangeListener {
@@ -72,8 +69,6 @@ public class KillerGameActivity extends BaseActivity implements
 	private int mInitNum = 5;
 	// init killer & police num,killer == police
 	private int mKillerNum = 1;
-	// init civilian numm
-	private int mCivilianNum = 5;
 	private TextView mCivilianNumTv, mKillerNumTv, mPoliceNumTv, mTotalNumTv;
 	private SeekBar mSettingBar;
 
@@ -93,67 +88,6 @@ public class KillerGameActivity extends BaseActivity implements
 	private boolean clickFlag = false;
 	private View mRoleLayout;
 	private Size mPreviewSize, mPictureSize;
-	private SurfaceHolder.Callback2 callback = new SurfaceHolder.Callback2() {
-		@Override
-		public void surfaceDestroyed(SurfaceHolder holder) {
-			if (mCamera != null) {
-				mCamera.release();
-				mCamera = null;
-			}
-
-		}
-
-		@SuppressLint("NewApi")
-		@Override
-		public void surfaceCreated(SurfaceHolder holder) {
-			try {
-				mCamera = Camera.open(cameraId);
-				Parameters parameters = mCamera.getParameters();
-				mPreviewSize = parameters.getSupportedPreviewSizes().get(0);
-				mPictureSize = parameters.getSupportedPictureSizes().get(0);
-			} catch (Exception e) {
-				Log.e(TAG, "open camera fail!");
-				e.printStackTrace();
-				cameraId = -1;
-				mSurfaceView.setVisibility(View.GONE);
-				userIcon.setImageResource(R.drawable.default_killer_03);
-				userIcon.setVisibility(View.VISIBLE);
-			}
-		}
-
-		@Override
-		public void surfaceChanged(SurfaceHolder holder, int format, int width,
-				int height) {
-			if (mCamera != null) {
-				try {
-					Camera.Parameters parameters = mCamera.getParameters();
-					// 设置照片格式
-					parameters.setPictureFormat(PixelFormat.JPEG);
-					// 设置预浏尺寸
-					parameters.setPreviewSize(mPreviewSize.width,
-							mPreviewSize.height);
-					// 设置照片分辨率
-					parameters.setPictureSize(mPictureSize.width,
-							mPictureSize.height);
-					mCamera.setParameters(parameters);
-					mCamera.setPreviewDisplay(holder);
-					mCamera.setDisplayOrientation(90);
-					mCamera.startPreview();
-				} catch (IOException e) {
-					e.printStackTrace();
-					mCamera.release();
-					mCamera = null;
-				}
-
-			}
-		}
-
-		@Override
-		public void surfaceRedrawNeeded(SurfaceHolder holder) {
-			// TODO Auto-generated method stub
-
-		}
-	};
 
 	// killer content
 	private View mKillerContentView;
@@ -172,14 +106,36 @@ public class KillerGameActivity extends BaseActivity implements
 	private View mCheckGuideView;
 	private ImageView mCheckBtn;
 
-	// Killer check guide resule
+	// Killer check guide result
 	private View mCheckGuideResultView;
 	private ImageView mContinueBtn;
 
 	// killer result guide first view
+	//有遗言死亡界面
 	private View mResultGuideFirstView;
 	private ImageView mVoteBtn;
 	private TextView mDeadStatusFirstTV;
+	
+	//killer result guide second view
+	//无遗言死亡界面
+	private View mResultGuideSecondView;
+	private ImageView mNextStepBtn;
+	private TextView mDeadStatusSecondTv;
+	
+	//killer over view
+	private View mKillerOverView;
+	private ImageView mPunishBtn;
+	private ImageView mBackToBtn;
+	private ImageView mRestartBtn;
+	private ImageView mShareBtn;
+	
+	//killer win view
+	private View mKillerWinView;
+	private TextView mPoliceTipsTv;
+	private ImageView mSecPunishBtn;
+	private ImageView mSecBackToBtn;
+	private ImageView mSecRestartBtn;
+	private ImageView mSecShareBtn;
 
 	// bottom view
 	private RelativeLayout mBottomView;
@@ -192,12 +148,20 @@ public class KillerGameActivity extends BaseActivity implements
 	private static final int KILL = 1;
 	private static final int CHECK = 2;
 	private static final int CHECKED = 3;
+	private static final int VOTE = 4;
 	private int mStatus = START;
+	
+	//current killed people
+	private Killers mCurrentKilledIndetity;
+	private int mCurrentKillerIndex;
 
 	private static final int MSG_GET_HEIGHT = 0;
 	private static final int MSG_SET_GRIDVIEW_LAYOUT = 1;
 	private static final int MSG_CHECK_GUIDE = 2;
 	private static final int MSG_CHECK_ROLE_FINISH = 3;
+	private static final int MSG_KILLER_OVER = 4;
+	private static final int MSG_KILLER_WIN = 5;
+	private static final int MSG_KILL_RESULT = 6;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -265,6 +229,84 @@ public class KillerGameActivity extends BaseActivity implements
 				mNextBtn.setEnabled(true);
 				clickFlag = true;
 				break;
+			case MSG_KILLER_OVER:
+				mVoteBar.setVisibility(View.INVISIBLE);
+				
+				mKillerContentView.setVisibility(View.GONE);
+				setAnimation(mKillerContentView, R.anim.slide_up_out);
+				
+				mKillerOverView.setVisibility(View.VISIBLE);
+				break;
+			case MSG_KILLER_WIN:
+				List<Integer> policeList = getPoliceList();
+				String policeTip = "";
+				switch (policeList.size()) {
+				case 1:
+					policeTip = getString(R.string.one_police_tip, policeList.get(0));
+					break;
+				case 2:
+					policeTip = getString(R.string.one_police_tip, policeList.get(0), policeList.get(1));
+					break;
+				case 3:
+					policeTip = getString(R.string.one_police_tip, policeList.get(0), policeList.get(1),
+							policeList.get(2));
+					break;
+				case 4:
+					policeTip = getString(R.string.one_police_tip, policeList.get(0), policeList.get(1),
+							policeList.get(2), policeList.get(3));
+					break;
+				default:
+					Log.e(TAG, "Error police num:" + policeList.size());
+					break;
+				}
+				mVoteBar.setVisibility(View.INVISIBLE);
+				
+				mKillerContentView.setVisibility(View.GONE);
+				setAnimation(mKillerContentView, R.anim.slide_up_out);
+				
+				mKillerWinView.setVisibility(View.VISIBLE);
+				mPoliceTipsTv.setText(policeTip);
+				break;
+			case MSG_KILL_RESULT:
+				String indetity = "";
+				String statusTip = "";
+				if (Killers.Police == mCurrentKilledIndetity) {
+					indetity = getString(R.string.police);
+				} else if (Killers.Killer == mCurrentKilledIndetity) {
+					indetity = getString(R.string.killer);
+				} else {
+					indetity = getString(R.string.civilian);
+				}
+				
+				if (getPlayerCount(Killers.Killer) >= getDeadCount()) {
+					Log.d(TAG, "the dead has something to say");
+					//死者有遗言
+					statusTip = getString(R.string.killer_person_status, mCurrentKillerIndex, indetity);
+				} else {
+					Log.d(TAG, "the dead cannot say anything");
+					//死者无遗言
+					statusTip = getString(R.string.killer_person_no_status, mCurrentKillerIndex, indetity);
+				}
+				
+				if (mStatus == CHECKED) {
+					mCheckGuideResultView.setVisibility(View.GONE);
+					
+					mResultGuideFirstView.setVisibility(View.VISIBLE);
+					mResultGuideSecondView.setVisibility(View.GONE);
+					
+					mDeadStatusFirstTV.setText(statusTip);
+				} else if (mStatus == VOTE) {
+					mVoteBar.setVisibility(View.INVISIBLE);
+					
+					mKillerContentView.setVisibility(View.GONE);
+					setAnimation(mKillerContentView, R.anim.slide_up_out);
+					mCheckIdBtn.setVisibility(View.GONE);
+					
+					mResultGuideFirstView.setVisibility(View.GONE);
+					mResultGuideSecondView.setVisibility(View.VISIBLE);
+					mDeadStatusSecondTv.setText(statusTip);
+				}
+				break;
 
 			default:
 				break;
@@ -300,6 +342,7 @@ public class KillerGameActivity extends BaseActivity implements
 		mTotalNumTv = (TextView) findViewById(R.id.tv_total_num);
 		mSettingBar = (SeekBar) findViewById(R.id.bar_set_player);
 		mSettingBar.setOnSeekBarChangeListener(this);
+		setPlayerNumbers(mKillerNum, mTotalPlayerNum);
 
 		// 发牌界面，设置玩家头像，身份等
 		mCheckUserInfoView = findViewById(R.id.kill_check_userinfo);
@@ -319,7 +362,7 @@ public class KillerGameActivity extends BaseActivity implements
 		} else {
 			userIcon.setVisibility(View.INVISIBLE);
 			mSurfaceHolder = mSurfaceView.getHolder();
-			mSurfaceHolder.addCallback(callback);
+			mSurfaceHolder.addCallback(mSurfaceCallback);
 		}
 
 		// 玩家列表，Gridview
@@ -352,12 +395,103 @@ public class KillerGameActivity extends BaseActivity implements
 		mContinueBtn = (ImageView) findViewById(R.id.iv_to_kill_result);
 		mContinueBtn.setOnClickListener(this);
 
-		// 法官台词，杀人结束界面
+		// 法官台词，杀人结束界面, 发言
 		mResultGuideFirstView = findViewById(R.id.kill_result_first);
 		mVoteBtn = (ImageView) findViewById(R.id.iv_to_vote);
 		mVoteBtn.setOnClickListener(this);
 		mDeadStatusFirstTV = (TextView) findViewById(R.id.tv_dead_status_first);
+		
+		//法官太死，杀人结束界面，不能发言
+		mResultGuideSecondView = findViewById(R.id.kill_result_second);
+		mNextStepBtn = (ImageView) findViewById(R.id.btn_next_step);
+		mNextStepBtn.setOnClickListener(this);
+		mDeadStatusSecondTv = (TextView) findViewById(R.id.tv_dead_status_second);
+		
+		//好人胜利界面
+		mKillerOverView = findViewById(R.id.killer_over);
+		mPunishBtn = (ImageView) findViewById(R.id.killer_punish);
+		mBackToBtn = (ImageView) findViewById(R.id.btn_tokiller);
+		mRestartBtn = (ImageView) findViewById(R.id.btn_restart);
+		mShareBtn = (ImageView) findViewById(R.id.btn_share);
+		mPunishBtn.setOnClickListener(this);
+		mBackToBtn.setOnClickListener(this);
+		mRestartBtn.setOnClickListener(this);
+		mShareBtn.setOnClickListener(this);		
+		
+		//杀手胜利界面
+		mKillerWinView = findViewById(R.id.killer_win);
+		mPoliceTipsTv = (TextView) findViewById(R.id.tv_police_tips);
+		mSecPunishBtn = (ImageView) findViewById(R.id.sec_killer_punish);
+		mSecBackToBtn = (ImageView) findViewById(R.id.sec_btn_tokiller);
+		mSecRestartBtn = (ImageView) findViewById(R.id.sec_btn_restart);
+		mSecShareBtn = (ImageView) findViewById(R.id.sec_btn_share);
+		mSecPunishBtn.setOnClickListener(this);
+		mSecBackToBtn.setOnClickListener(this);
+		mSecRestartBtn.setOnClickListener(this);
+		mSecShareBtn.setOnClickListener(this);		
 	}
+	
+	private SurfaceHolder.Callback2 mSurfaceCallback = new SurfaceHolder.Callback2() {
+		@Override
+		public void surfaceDestroyed(SurfaceHolder holder) {
+			if (mCamera != null) {
+				mCamera.release();
+				mCamera = null;
+			}
+
+		}
+
+		@SuppressLint("NewApi")
+		@Override
+		public void surfaceCreated(SurfaceHolder holder) {
+			try {
+				mCamera = Camera.open(cameraId);
+				Parameters parameters = mCamera.getParameters();
+				mPreviewSize = parameters.getSupportedPreviewSizes().get(0);
+				mPictureSize = parameters.getSupportedPictureSizes().get(0);
+			} catch (Exception e) {
+				Log.e(TAG, "open camera fail!");
+				e.printStackTrace();
+				cameraId = -1;
+				mSurfaceView.setVisibility(View.GONE);
+				userIcon.setImageResource(R.drawable.default_killer_03);
+				userIcon.setVisibility(View.VISIBLE);
+			}
+		}
+
+		@Override
+		public void surfaceChanged(SurfaceHolder holder, int format, int width,
+				int height) {
+			if (mCamera != null) {
+				try {
+					Camera.Parameters parameters = mCamera.getParameters();
+					// 设置照片格式
+					parameters.setPictureFormat(PixelFormat.JPEG);
+					// 设置预浏尺寸
+					parameters.setPreviewSize(mPreviewSize.width,
+							mPreviewSize.height);
+					// 设置照片分辨率
+					parameters.setPictureSize(mPictureSize.width,
+							mPictureSize.height);
+					mCamera.setParameters(parameters);
+					mCamera.setPreviewDisplay(holder);
+					mCamera.setDisplayOrientation(90);
+					mCamera.startPreview();
+				} catch (IOException e) {
+					e.printStackTrace();
+					mCamera.release();
+					mCamera = null;
+				}
+
+			}
+		}
+
+		@Override
+		public void surfaceRedrawNeeded(SurfaceHolder holder) {
+			// TODO Auto-generated method stub
+
+		}
+	};
 
 	@Override
 	public void onClick(View v) {
@@ -373,7 +507,7 @@ public class KillerGameActivity extends BaseActivity implements
 				Toast.makeText(this, "参加游戏人数不对", Toast.LENGTH_SHORT).show();
 				finish();
 			}
-			initRole(mKillerNum, mTotalPlayerNum);
+			initAllPlayerIdentity(mKillerNum, mTotalPlayerNum);
 			break;
 		case R.id.btn_next:
 			if (index > mTotalPlayerNum) {
@@ -393,7 +527,7 @@ public class KillerGameActivity extends BaseActivity implements
 				if (mCamera != null && cameraId >= 0) {
 					userIcon.setVisibility(View.INVISIBLE);
 				}
-				mNextBtn.setText(index + "号查看身份");
+				mNextBtn.setText(getString(R.string.n_check_indetity, index));
 				clickFlag = false;
 			} else {
 				index++;
@@ -446,7 +580,7 @@ public class KillerGameActivity extends BaseActivity implements
 					clickFlag = true;
 				}
 
-				Killers killers = confirmRole();
+				Killers killers = getPlayerIdentity();
 				KPlayer player = new KPlayer(index - 1);
 				player.setIdentity(killers);
 
@@ -456,12 +590,11 @@ public class KillerGameActivity extends BaseActivity implements
 					mHandler.sendMessage(mHandler
 							.obtainMessage(MSG_SET_GRIDVIEW_LAYOUT));
 
-					testData();
-					mNextBtn.setText("完成");
+					mNextBtn.setText(R.string.complete);
 				} else {
-					mNextBtn.setText("传递给下一个人");
+					mNextBtn.setText(R.string.transfer_to_next);
 				}
-				mPlayerNumTv.setText((index - 1) + "号");
+				mPlayerNumTv.setText(getString(R.string.n_number, index - 1));
 				String roleStr = "";
 				if (Killers.Police == killers) {
 					roleStr = getString(R.string.police);
@@ -509,6 +642,13 @@ public class KillerGameActivity extends BaseActivity implements
 			mCheckGuideView.setVisibility(View.INVISIBLE);
 			break;
 		case R.id.iv_check_finish:
+			//init checked status
+			for(KPlayer player : mPlayerLists){
+				if (player.isChecked()) {
+					player.setChecked(false);
+					mPlayerAdapter.notifyDataSetChanged();
+				}
+			}
 			mStatus = CHECKED;
 
 			mCheckIdBtn.setVisibility(View.INVISIBLE);
@@ -519,7 +659,81 @@ public class KillerGameActivity extends BaseActivity implements
 			mCheckGuideResultView.setVisibility(View.VISIBLE);
 			break;
 		case R.id.iv_to_kill_result:
-			// start vote guide
+			//continue
+			mHandler.sendMessage(mHandler.obtainMessage(MSG_KILL_RESULT));
+			break;
+		case R.id.iv_to_vote:
+			//go to vote view
+			mStatus = VOTE;
+			mResultGuideFirstView.setVisibility(View.GONE);
+			
+			mCheckIdBtn.setVisibility(View.VISIBLE);
+			mKillerContentView.setVisibility(View.VISIBLE);
+			setAnimation(mKillerContentView, R.anim.slide_down_in);
+			mTipView.setText(R.string.killer_tip_vote);
+			mTipView.setVisibility(View.VISIBLE);
+			mKillerStartBtn.setVisibility(View.GONE);
+			
+			mCheckFinishBtn.setVisibility(View.GONE);
+			break;
+		case R.id.killer_punish:
+		case R.id.sec_killer_punish:
+			//wait for code
+			break;
+		case R.id.btn_tokiller:
+		case R.id.sec_btn_tokiller:
+			//回到杀人游戏主界面，重新设置人数
+			mTotalPlayerNum = 5;
+			mKillerNum = 1;
+			
+			mInitView.setVisibility(View.VISIBLE);
+			
+			mPlayerLists.clear();
+			index = 1;
+			
+			mStatus = START;
+			mTipView.setVisibility(View.GONE);
+			mKillerStartBtn.setVisibility(View.VISIBLE);
+			
+			initAllPlayerIdentity(mKillerNum, mTotalPlayerNum);
+			mNextBtn.setText(getString(R.string.n_check_indetity, index));
+			clickFlag = false;
+			
+			mRoleLayout.setVisibility(View.INVISIBLE);
+			mCheckIdBtn.setVisibility(View.GONE);
+			mKillerOverView.setVisibility(View.GONE);
+			mKillerWinView.setVisibility(View.GONE);
+			break;
+		case R.id.btn_restart:
+		case R.id.sec_btn_restart:
+			//重新开始，按当前的人数重新检查身份
+			mPlayerLists.clear();
+			index = 1;
+			
+			mStatus = START;
+			mTipView.setVisibility(View.GONE);
+			mKillerStartBtn.setVisibility(View.VISIBLE);
+			
+			initAllPlayerIdentity(mKillerNum, mTotalPlayerNum);
+			mNextBtn.setText(getString(R.string.n_check_indetity, index));
+			clickFlag = false;
+			
+			mRoleLayout.setVisibility(View.INVISIBLE);
+			mCheckIdBtn.setVisibility(View.GONE);
+			mKillerOverView.setVisibility(View.GONE);
+			mKillerWinView.setVisibility(View.GONE);
+			
+			mCheckUserInfoView.setVisibility(View.VISIBLE);
+			
+			break;
+		case R.id.btn_share:
+		case R.id.sec_btn_share:
+			//Share your result
+			break;
+		case R.id.btn_next_step:
+			//下一轮
+			mResultGuideSecondView.setVisibility(View.GONE);
+			mKillGuideView.setVisibility(View.VISIBLE);
 			break;
 
 		default:
@@ -546,6 +760,7 @@ public class KillerGameActivity extends BaseActivity implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
+		//当为警察验人时，点击方有效，否则无效
 		if (mStatus != CHECK) {
 			return;
 		}
@@ -561,7 +776,7 @@ public class KillerGameActivity extends BaseActivity implements
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
 			int position, long id) {
-		if (mStatus != KILL) {
+		if (mStatus != KILL && mStatus != VOTE) {
 			return false;
 		}
 		mVoteBar.setVisibility(View.VISIBLE);
@@ -572,44 +787,78 @@ public class KillerGameActivity extends BaseActivity implements
 			if (i == position) {
 				player.setDead(true);
 				mPlayerAdapter.notifyDataSetChanged();
-				if (Killers.Police == player.getIdentity()) {
+				mCurrentKilledIndetity = player.getIdentity();
+				mCurrentKillerIndex = player.getNumber();
+				if (Killers.Police == mCurrentKilledIndetity) {
+					Log.d(TAG, "you killed a police");
 					// If killer killed police
 					// judge police count
 					if (0 == getPlayerCount(Killers.Police)) {
 						// game over,killer win
-
+						mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_KILLER_WIN), 1000);
+						return false;
 					}
-					// going on
-					mHandler.sendEmptyMessageDelayed(MSG_CHECK_GUIDE, 1000);
-				} else if (Killers.Cilivian == player.getIdentity()) {
+				} else if (Killers.Cilivian == mCurrentKilledIndetity) {
+					Log.d(TAG, "you killed a Cilivian");
 					// If killer killed civilian
 					// judge civilian count
 					if (0 == getPlayerCount(Killers.Cilivian)) {
 						// game over,killer win
+						mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_KILLER_WIN), 1000);
+						return false;
 					}
-					// going on
 				} else {
+					Log.d(TAG, "you killed a Killer");
 					// If killer killed Killer
-					// joke me? killer kill killer............................
 					// judge killer count
 					if (0 == getPlayerCount(Killers.Killer)) {
 						// game over,police & civilian win
+						mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_KILLER_OVER), 1000);
+						return false;
 					}
-					// going on
+				}
+				// going on
+				if (mStatus == VOTE) {
+					mHandler.sendEmptyMessageDelayed(MSG_KILL_RESULT, 1000);
+				} else {
+					mHandler.sendEmptyMessageDelayed(MSG_CHECK_GUIDE, 1000);
 				}
 			}
 		}
 		return false;
 	}
 
+	/**get spec player people num,获得指定身份还活着的人数*/
 	private int getPlayerCount(Killers killer) {
 		int count = 0;
 		for (KPlayer player : mPlayerLists) {
-			if (killer == player.getIdentity()) {
+			if (killer == player.getIdentity() && !player.isDead()) {
 				count++;
 			}
 		}
 		return count;
+	}
+	
+	/**get dead people number*/
+	private int getDeadCount(){
+		int count = 0;
+		for(KPlayer player : mPlayerLists){
+			if (player.isDead()) {
+				count ++ ;
+			}
+		}
+		return count;
+	}
+	
+	/**get police list*/
+	private List<Integer> getPoliceList(){
+		List<Integer> list = new ArrayList<Integer>();
+		for (KPlayer player : mPlayerLists) {
+			if (Killers.Police == player.getIdentity()) {
+				list.add(player.getNumber());
+			}
+		}
+		return list;
 	}
 
 	@SuppressLint("NewApi")
@@ -631,24 +880,26 @@ public class KillerGameActivity extends BaseActivity implements
 	public void onProgressChanged(SeekBar seekBar, int progress,
 			boolean fromUser) {
 		mTotalPlayerNum = mInitNum + progress;
-		setRoleNumber(mTotalPlayerNum);
+		setPlayerNumber(mTotalPlayerNum);
 	}
 
 	@Override
 	public void onStartTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
-
+		//do nothing
 	}
 
 	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
-
+		//do nothing
 	}
 
-	private void setRoleNumber(int number) {
+	/**
+	 * set killer number by total player number
+	 * @param totalPlayerNumber
+	 */
+	private void setPlayerNumber(int totalPlayerNumber) {
 		mKillerNum = 0;
-		switch (number) {
+		switch (totalPlayerNumber) {
 		case 5:
 		case 6:
 		case 7:
@@ -672,17 +923,33 @@ public class KillerGameActivity extends BaseActivity implements
 		default:
 			break;
 		}
-		setInfo(mKillerNum, number);
+		setPlayerNumbers(mKillerNum, totalPlayerNumber);
 	}
 
-	private void setInfo(int n, int number) {
-		mTotalNumTv.setText(number + "人");
-		mKillerNumTv.setText("杀手" + n + "人");
-		mPoliceNumTv.setText("警察" + n + "人");
-		mCivilianNumTv.setText("平民" + (number - 2 * n) + "人");
+	/**
+	 * set player numbers
+	 * @param n killer & police numbers
+	 * @param number total players number
+	 */
+	private void setPlayerNumbers(int n, int number) {
+		mTotalNumTv.setText(getString(R.string.n_people, number));
+		setSpannableString(mKillerNumTv, getString(R.string.n_killer, n));
+		setSpannableString(mPoliceNumTv, getString(R.string.n_police, n));
+		setSpannableString(mCivilianNumTv, getString(R.string.n_civilian, number - 2 * n));
+	}
+	
+	private void setSpannableString(TextView tv, String msg){
+		SpannableString spannableString = new SpannableString(msg);
+		ForegroundColorSpan span = new ForegroundColorSpan(Color.WHITE);
+		spannableString.setSpan(span, 3, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		tv.setText(spannableString);
 	}
 
-	private Killers confirmRole() {
+	/**
+	 * get player identity by random way
+	 * @return a identity
+	 */
+	private Killers getPlayerIdentity() {
 		if (mRandom == null) {
 			mRandom = new Random();
 		}
@@ -705,9 +972,12 @@ public class KillerGameActivity extends BaseActivity implements
 	}
 
 	/**
-	 * in role list if 0 mean killer,1 mean police ,2 mean civilian
-	 * */
-	private void initRole(int killerNumber, int totalNumber) {
+	 * init all player identity by totalNumber & killerNumber
+	 * 根据总共玩家和杀手玩家数，预先分配好警察，杀手和平民的人数
+	 * @param killerNumber
+	 * @param totalNumber
+	 */
+	private void initAllPlayerIdentity(int killerNumber, int totalNumber) {
 		if (role == null)
 			role = new ArrayList<Integer>();
 		else
@@ -720,16 +990,6 @@ public class KillerGameActivity extends BaseActivity implements
 			} else {
 				role.add(2);
 			}
-		}
-	}
-
-	/** just test method */
-	private void testData() {
-		Log.d(TAG, "testData.size=" + mPlayerLists.size());
-		for (int i = 0; i < mPlayerLists.size(); i++) {
-			KPlayer player = mPlayerLists.get(i);
-			Log.d(TAG, "index is : " + player.getNumber() + "    role is : "
-					+ player.getIdentity());
 		}
 	}
 }

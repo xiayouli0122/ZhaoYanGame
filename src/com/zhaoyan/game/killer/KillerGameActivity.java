@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Random;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
@@ -22,6 +24,7 @@ import android.os.SystemClock;
 import android.text.Layout;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -135,9 +138,11 @@ public class KillerGameActivity extends BaseActivity implements
 					// 设置照片分辨率
 					parameters.setPictureSize(mPictureSize.width,
 							mPictureSize.height);
+					parameters.set("jpeg-quality", 50);
 					mCamera.setParameters(parameters);
 					mCamera.setPreviewDisplay(holder);
-					mCamera.setDisplayOrientation(90);
+					mCamera.setDisplayOrientation(getDisplayOritation(
+							getDispalyRotation(), cameraId));
 					mCamera.startPreview();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -404,28 +409,27 @@ public class KillerGameActivity extends BaseActivity implements
 							@Override
 							public void onPictureTaken(byte[] data,
 									Camera camera) {
-								mPlayerLists.get(index - 2).setHeadIcon(
-										BitmapFactory.decodeByteArray(data, 0,
-												data.length));
-								Matrix m = new Matrix();
-								if (mPlayerLists.get(index - 2).getHeadIcon() == null) {
+								Bitmap bitmap = BitmapFactory.decodeByteArray(
+										data, 0, data.length);
+								if (bitmap == null) {
 									Toast.makeText(getApplicationContext(),
 											"照片消失了。。。。", Toast.LENGTH_SHORT)
 											.show();
 									userIcon.setImageResource(R.drawable.default_killer_03);
 								} else {
-									int width = mPlayerLists.get(index - 2)
-											.getHeadIcon().getWidth();
-									int height = mPlayerLists.get(index - 2)
-											.getHeadIcon().getHeight();
-									m.setRotate(-90);
+									int width = bitmap.getWidth();
+									int height = bitmap.getHeight();
+									Matrix m = new Matrix();
+									m.setScale(64.0f / width, 48.0f / height);
+									m.postRotate(-(getDisplayOritation(
+											getDispalyRotation(), cameraId)));
 									mPlayerLists.get(index - 2).setHeadIcon(
-											Bitmap.createBitmap(mPlayerLists
-													.get(index - 2)
-													.getHeadIcon(), 0, 0,
+											Bitmap.createBitmap(bitmap, 0, 0,
 													width, height, m, true));
 									userIcon.setImageBitmap(mPlayerLists.get(
 											index - 2).getHeadIcon());
+									bitmap.recycle();
+									bitmap = null;
 								}
 								userIcon.setVisibility(View.VISIBLE);
 								mHandler.sendMessage(mHandler
@@ -449,7 +453,6 @@ public class KillerGameActivity extends BaseActivity implements
 				Killers killers = confirmRole();
 				KPlayer player = new KPlayer(index - 1);
 				player.setIdentity(killers);
-
 				mPlayerLists.add(player);
 				if (index > mTotalPlayerNum) {
 					// setting player gridview ui
@@ -470,9 +473,10 @@ public class KillerGameActivity extends BaseActivity implements
 				} else {
 					roleStr = getString(R.string.civilian);
 				}
-
+				mCamera.startPreview();
 				mRoleTv.setText(roleStr);
 				mRoleLayout.setVisibility(View.VISIBLE);
+				mNextBtn.setEnabled(true);
 			}
 			break;
 		case R.id.iv_killer_start:
@@ -732,4 +736,34 @@ public class KillerGameActivity extends BaseActivity implements
 					+ player.getIdentity());
 		}
 	}
+
+	/** this method below just for camera take picture start */
+	private int getDisplayOritation(int degrees, int cameraId) {
+		Camera.CameraInfo info = new Camera.CameraInfo();
+		Camera.getCameraInfo(cameraId, info);
+		int result;
+		if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+			result = (info.orientation + degrees) % 360;
+			result = (360 - result) % 360;
+		} else {
+			result = (info.orientation - degrees + 360) % 360;
+		}
+		return result;
+	}
+
+	private int getDispalyRotation() {
+		int i = getWindowManager().getDefaultDisplay().getRotation();
+		switch (i) {
+		case Surface.ROTATION_0:
+			return 0;
+		case Surface.ROTATION_90:
+			return 90;
+		case Surface.ROTATION_180:
+			return 180;
+		case Surface.ROTATION_270:
+			return 270;
+		}
+		return 0;
+	}
+	/** this method up just for camera take picture end */
 }

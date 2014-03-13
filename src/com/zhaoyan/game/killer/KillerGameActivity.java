@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -21,6 +22,8 @@ import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -28,6 +31,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -43,6 +48,8 @@ import android.widget.Toast;
 
 import com.zhaoyan.game.BaseActivity;
 import com.zhaoyan.game.R;
+import com.zhaoyan.game.dialog.ConfirmDialog;
+import com.zhaoyan.game.dialog.ConfirmDialog.ZYOnClickListener;
 import com.zhaoyan.game.util.Log;
 import com.zhaoyan.game.util.Constants.Killers;
 
@@ -101,7 +108,6 @@ public class KillerGameActivity extends BaseActivity implements
 	// killer guide view
 	private View mKillGuideView;
 	private ImageView mKillBtn;
-
 	// killer check guide view
 	private View mCheckGuideView;
 	private ImageView mCheckBtn;
@@ -144,12 +150,13 @@ public class KillerGameActivity extends BaseActivity implements
 	private int mContentHeight = 0;
 
 	// record what u doing
-	private static final int START = 0;
-	private static final int KILL = 1;
-	private static final int CHECK = 2;
-	private static final int CHECKED = 3;
-	private static final int VOTE = 4;
-	private int mStatus = START;
+	private static final int INIT = 0;
+	private static final int START = 1;
+	private static final int KILL = 2;
+	private static final int CHECK = 3;
+	private static final int CHECKED = 4;
+	private static final int VOTE = 5;
+	private int mStatus = INIT;
 	
 	//current killed people
 	private Killers mCurrentKilledIndetity;
@@ -232,6 +239,7 @@ public class KillerGameActivity extends BaseActivity implements
 			case MSG_KILLER_OVER:
 				mVoteBar.setVisibility(View.INVISIBLE);
 				
+				mCheckIdBtn.setVisibility(View.INVISIBLE);
 				mKillerContentView.setVisibility(View.GONE);
 				setAnimation(mKillerContentView, R.anim.slide_up_out);
 				
@@ -261,6 +269,7 @@ public class KillerGameActivity extends BaseActivity implements
 				}
 				mVoteBar.setVisibility(View.INVISIBLE);
 				
+				mCheckIdBtn.setVisibility(View.INVISIBLE);
 				mKillerContentView.setVisibility(View.GONE);
 				setAnimation(mKillerContentView, R.anim.slide_up_out);
 				
@@ -342,7 +351,7 @@ public class KillerGameActivity extends BaseActivity implements
 		mTotalNumTv = (TextView) findViewById(R.id.tv_total_num);
 		mSettingBar = (SeekBar) findViewById(R.id.bar_set_player);
 		mSettingBar.setOnSeekBarChangeListener(this);
-		setPlayerNumbers(mKillerNum, mTotalPlayerNum);
+		updatePlayerNumber(mKillerNum, mTotalPlayerNum);
 
 		// 发牌界面，设置玩家头像，身份等
 		mCheckUserInfoView = findViewById(R.id.kill_check_userinfo);
@@ -488,8 +497,7 @@ public class KillerGameActivity extends BaseActivity implements
 
 		@Override
 		public void surfaceRedrawNeeded(SurfaceHolder holder) {
-			// TODO Auto-generated method stub
-
+			//do nothing
 		}
 	};
 
@@ -497,9 +505,14 @@ public class KillerGameActivity extends BaseActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.iv_killer_game_back:
-			finish();
+			if (mStatus != INIT) {
+				showExitGameDialog();
+			} else {
+				finish();
+			}
 			break;
 		case R.id.iv_start_deal:
+			mStatus = START;
 			mInitView.setVisibility(View.GONE);
 			mCheckUserInfoView.setVisibility(View.VISIBLE);
 			if (2 * mKillerNum >= mTotalPlayerNum || mTotalPlayerNum < 5
@@ -612,6 +625,7 @@ public class KillerGameActivity extends BaseActivity implements
 			// start game
 			mCheckIdBtn.setVisibility(View.INVISIBLE);
 
+			mCheckIdBtn.setVisibility(View.INVISIBLE);
 			mKillerContentView.setVisibility(View.GONE);
 			setAnimation(mKillerContentView, R.anim.slide_up_out);
 
@@ -652,7 +666,6 @@ public class KillerGameActivity extends BaseActivity implements
 			mStatus = CHECKED;
 
 			mCheckIdBtn.setVisibility(View.INVISIBLE);
-
 			mKillerContentView.setVisibility(View.GONE);
 			setAnimation(mKillerContentView, R.anim.slide_up_out);
 
@@ -683,48 +696,14 @@ public class KillerGameActivity extends BaseActivity implements
 		case R.id.btn_tokiller:
 		case R.id.sec_btn_tokiller:
 			//回到杀人游戏主界面，重新设置人数
-			mTotalPlayerNum = 5;
-			mKillerNum = 1;
-			
-			mInitView.setVisibility(View.VISIBLE);
-			
-			mPlayerLists.clear();
-			index = 1;
-			
-			mStatus = START;
-			mTipView.setVisibility(View.GONE);
-			mKillerStartBtn.setVisibility(View.VISIBLE);
-			
-			initAllPlayerIdentity(mKillerNum, mTotalPlayerNum);
-			mNextBtn.setText(getString(R.string.n_check_indetity, index));
-			clickFlag = false;
-			
-			mRoleLayout.setVisibility(View.INVISIBLE);
-			mCheckIdBtn.setVisibility(View.GONE);
-			mKillerOverView.setVisibility(View.GONE);
-			mKillerWinView.setVisibility(View.GONE);
+			Log.d(TAG, "back to kill main ui");
+			backToInitView();
 			break;
 		case R.id.btn_restart:
 		case R.id.sec_btn_restart:
 			//重新开始，按当前的人数重新检查身份
-			mPlayerLists.clear();
-			index = 1;
-			
-			mStatus = START;
-			mTipView.setVisibility(View.GONE);
-			mKillerStartBtn.setVisibility(View.VISIBLE);
-			
-			initAllPlayerIdentity(mKillerNum, mTotalPlayerNum);
-			mNextBtn.setText(getString(R.string.n_check_indetity, index));
-			clickFlag = false;
-			
-			mRoleLayout.setVisibility(View.INVISIBLE);
-			mCheckIdBtn.setVisibility(View.GONE);
-			mKillerOverView.setVisibility(View.GONE);
-			mKillerWinView.setVisibility(View.GONE);
-			
-			mCheckUserInfoView.setVisibility(View.VISIBLE);
-			
+			Log.d(TAG, "restart");
+			restartGame();
 			break;
 		case R.id.btn_share:
 		case R.id.sec_btn_share:
@@ -739,6 +718,64 @@ public class KillerGameActivity extends BaseActivity implements
 		default:
 			break;
 		}
+	}
+	
+	/**
+	 * back to kill game main ui and set player again
+	 */
+	private void backToInitView(){
+		mTotalPlayerNum = 5;
+		mKillerNum = 1;
+		
+		mInitView.setVisibility(View.VISIBLE);
+		mSettingBar.setProgress(0);
+		
+		mPlayerLists.clear();
+		index = 1;
+		
+		mStatus = INIT;
+		mTipView.setVisibility(View.GONE);
+		mKillerStartBtn.setVisibility(View.VISIBLE);
+		
+		initAllPlayerIdentity(mKillerNum, mTotalPlayerNum);
+		setPlayerNumber(mTotalPlayerNum);
+		mNextBtn.setText(getString(R.string.n_check_indetity, index));
+		clickFlag = false;
+		
+		mRoleLayout.setVisibility(View.INVISIBLE);
+		
+		mCheckUserInfoView.setVisibility(View.GONE);
+		mKillerContentView.setVisibility(View.GONE);
+		mCheckIdBtn.setVisibility(View.GONE);
+		mKillGuideView.setVisibility(View.GONE);
+		mCheckGuideView.setVisibility(View.GONE);
+		mCheckGuideResultView.setVisibility(View.GONE);
+		mResultGuideFirstView.setVisibility(View.GONE);
+		mResultGuideSecondView.setVisibility(View.GONE);
+		mKillerOverView.setVisibility(View.GONE);
+		mKillerWinView.setVisibility(View.GONE);
+	}
+	
+	/**
+	 * restart kill game
+	 */
+	private void restartGame(){
+		mPlayerLists.clear();
+		index = 1;
+		
+		mStatus = START;
+		mTipView.setVisibility(View.GONE);
+		mKillerStartBtn.setVisibility(View.VISIBLE);
+		
+		initAllPlayerIdentity(mKillerNum, mTotalPlayerNum);
+		mNextBtn.setText(getString(R.string.n_check_indetity, index));
+		clickFlag = false;
+		
+		mRoleLayout.setVisibility(View.INVISIBLE);
+		
+		mCheckUserInfoView.setVisibility(View.VISIBLE);
+		mKillerOverView.setVisibility(View.GONE);
+		mKillerWinView.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -923,7 +960,7 @@ public class KillerGameActivity extends BaseActivity implements
 		default:
 			break;
 		}
-		setPlayerNumbers(mKillerNum, totalPlayerNumber);
+		updatePlayerNumber(mKillerNum, totalPlayerNumber);
 	}
 
 	/**
@@ -931,7 +968,7 @@ public class KillerGameActivity extends BaseActivity implements
 	 * @param n killer & police numbers
 	 * @param number total players number
 	 */
-	private void setPlayerNumbers(int n, int number) {
+	private void updatePlayerNumber(int n, int number) {
 		mTotalNumTv.setText(getString(R.string.n_people, number));
 		setSpannableString(mKillerNumTv, getString(R.string.n_killer, n));
 		setSpannableString(mPoliceNumTv, getString(R.string.n_police, n));
@@ -991,5 +1028,27 @@ public class KillerGameActivity extends BaseActivity implements
 				role.add(2);
 			}
 		}
+	}
+	
+	private void showExitGameDialog(){
+		ConfirmDialog dialog = new ConfirmDialog(this, R.layout.dialog_confirm, R.style.MyDialog);
+		dialog.setOnClickListener(new ZYOnClickListener() {
+			@Override
+			public void onClick(Dialog dialog, View view) {
+				switch (view.getId()) {
+				case R.id.btn_confirm:
+					dialog.cancel();
+					backToInitView();
+					break;
+				case R.id.btn_cancel:
+					//do nothing
+					dialog.cancel();
+					break;
+				default:
+					break;
+				}
+			}
+		});
+		dialog.show();
 	}
 }

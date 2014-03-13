@@ -32,5 +32,7 @@
     <string name="n_police">警察 %1$d 人</string>
     <string name="n_civilian">平民 %1$d 人</string>
     
+    <string name="finish_confirm">确定要结束本轮游戏吗？</string>
+    
 
 </resources>

@@ -22,23 +22,22 @@ import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -50,8 +49,8 @@ import com.zhaoyan.game.BaseActivity;
 import com.zhaoyan.game.R;
 import com.zhaoyan.game.dialog.ConfirmDialog;
 import com.zhaoyan.game.dialog.ConfirmDialog.ZYOnClickListener;
-import com.zhaoyan.game.util.Log;
 import com.zhaoyan.game.util.Constants.Killers;
+import com.zhaoyan.game.util.Log;
 
 //police:警察   killer:杀手  civilian:平民 identity:身份
 public class KillerGameActivity extends BaseActivity implements
@@ -128,12 +127,13 @@ public class KillerGameActivity extends BaseActivity implements
 	private ImageView mNextStepBtn;
 	private TextView mDeadStatusSecondTv;
 	
-	//killer over view
-	private View mKillerOverView;
+	//killer lose view
+	private View mKillerLoseView;
 	private ImageView mPunishBtn;
 	private ImageView mBackToBtn;
 	private ImageView mRestartBtn;
 	private ImageView mShareBtn;
+	private LinearLayout mKillerLoseShowLL;
 	
 	//killer win view
 	private View mKillerWinView;
@@ -142,6 +142,7 @@ public class KillerGameActivity extends BaseActivity implements
 	private ImageView mSecBackToBtn;
 	private ImageView mSecRestartBtn;
 	private ImageView mSecShareBtn;
+	private LinearLayout mKillerWinShowLL;
 
 	// bottom view
 	private RelativeLayout mBottomView;
@@ -166,7 +167,7 @@ public class KillerGameActivity extends BaseActivity implements
 	private static final int MSG_SET_GRIDVIEW_LAYOUT = 1;
 	private static final int MSG_CHECK_GUIDE = 2;
 	private static final int MSG_CHECK_ROLE_FINISH = 3;
-	private static final int MSG_KILLER_OVER = 4;
+	private static final int MSG_KILLER_LOSE = 4;
 	private static final int MSG_KILLER_WIN = 5;
 	private static final int MSG_KILL_RESULT = 6;
 	private Handler mHandler = new Handler() {
@@ -236,17 +237,24 @@ public class KillerGameActivity extends BaseActivity implements
 				mNextBtn.setEnabled(true);
 				clickFlag = true;
 				break;
-			case MSG_KILLER_OVER:
+			case MSG_KILLER_LOSE:
 				mVoteBar.setVisibility(View.INVISIBLE);
 				
 				mCheckIdBtn.setVisibility(View.INVISIBLE);
 				mKillerContentView.setVisibility(View.GONE);
 				setAnimation(mKillerContentView, R.anim.slide_up_out);
 				
-				mKillerOverView.setVisibility(View.VISIBLE);
+				mKillerLoseView.setVisibility(View.VISIBLE);
+				
+				List<Integer> killerList = getPlayerList(Killers.Killer);
+				View killerLoseView = null;
+				for (int i = 0; i < killerList.size(); i++) {
+					killerLoseView = getKillerLoseItemView(killerList.get(i));
+					mKillerLoseShowLL.addView(killerLoseView);
+				}
 				break;
 			case MSG_KILLER_WIN:
-				List<Integer> policeList = getPoliceList();
+				List<Integer> policeList = getPlayerList(Killers.Police);
 				String policeTip = "";
 				switch (policeList.size()) {
 				case 1:
@@ -275,6 +283,13 @@ public class KillerGameActivity extends BaseActivity implements
 				
 				mKillerWinView.setVisibility(View.VISIBLE);
 				mPoliceTipsTv.setText(policeTip);
+				
+				List<Integer> killerList2 = getPlayerList(Killers.Killer);
+				View killerWinItemView = null;
+				for (int i = 0; i < killerList2.size(); i++) {
+					killerWinItemView = getKillerWinItemView(killerList2.get(i), i);
+					mKillerWinShowLL.addView(killerWinItemView);
+				}
 				break;
 			case MSG_KILL_RESULT:
 				String indetity = "";
@@ -410,14 +425,14 @@ public class KillerGameActivity extends BaseActivity implements
 		mVoteBtn.setOnClickListener(this);
 		mDeadStatusFirstTV = (TextView) findViewById(R.id.tv_dead_status_first);
 		
-		//法官太死，杀人结束界面，不能发言
+		//法官台词，杀人结束界面，不能发言
 		mResultGuideSecondView = findViewById(R.id.kill_result_second);
 		mNextStepBtn = (ImageView) findViewById(R.id.btn_next_step);
 		mNextStepBtn.setOnClickListener(this);
 		mDeadStatusSecondTv = (TextView) findViewById(R.id.tv_dead_status_second);
 		
 		//好人胜利界面
-		mKillerOverView = findViewById(R.id.killer_over);
+		mKillerLoseView = findViewById(R.id.killer_lose);
 		mPunishBtn = (ImageView) findViewById(R.id.killer_punish);
 		mBackToBtn = (ImageView) findViewById(R.id.btn_tokiller);
 		mRestartBtn = (ImageView) findViewById(R.id.btn_restart);
@@ -426,6 +441,7 @@ public class KillerGameActivity extends BaseActivity implements
 		mBackToBtn.setOnClickListener(this);
 		mRestartBtn.setOnClickListener(this);
 		mShareBtn.setOnClickListener(this);		
+		mKillerLoseShowLL = (LinearLayout) findViewById(R.id.ll_killer_lose_show);
 		
 		//杀手胜利界面
 		mKillerWinView = findViewById(R.id.killer_win);
@@ -438,6 +454,7 @@ public class KillerGameActivity extends BaseActivity implements
 		mSecBackToBtn.setOnClickListener(this);
 		mSecRestartBtn.setOnClickListener(this);
 		mSecShareBtn.setOnClickListener(this);		
+		mKillerWinShowLL = (LinearLayout) findViewById(R.id.ll_killer_win_show);
 	}
 	
 	private SurfaceHolder.Callback2 mSurfaceCallback = new SurfaceHolder.Callback2() {
@@ -698,12 +715,16 @@ public class KillerGameActivity extends BaseActivity implements
 			//回到杀人游戏主界面，重新设置人数
 			Log.d(TAG, "back to kill main ui");
 			backToInitView();
+			mKillerWinShowLL.removeAllViews();
+			mKillerLoseShowLL.removeAllViews();
 			break;
 		case R.id.btn_restart:
 		case R.id.sec_btn_restart:
 			//重新开始，按当前的人数重新检查身份
 			Log.d(TAG, "restart");
 			restartGame();
+			mKillerWinShowLL.removeAllViews();
+			mKillerLoseShowLL.removeAllViews();
 			break;
 		case R.id.btn_share:
 		case R.id.sec_btn_share:
@@ -752,7 +773,7 @@ public class KillerGameActivity extends BaseActivity implements
 		mCheckGuideResultView.setVisibility(View.GONE);
 		mResultGuideFirstView.setVisibility(View.GONE);
 		mResultGuideSecondView.setVisibility(View.GONE);
-		mKillerOverView.setVisibility(View.GONE);
+		mKillerLoseView.setVisibility(View.GONE);
 		mKillerWinView.setVisibility(View.GONE);
 	}
 	
@@ -774,7 +795,7 @@ public class KillerGameActivity extends BaseActivity implements
 		mRoleLayout.setVisibility(View.INVISIBLE);
 		
 		mCheckUserInfoView.setVisibility(View.VISIBLE);
-		mKillerOverView.setVisibility(View.GONE);
+		mKillerLoseView.setVisibility(View.GONE);
 		mKillerWinView.setVisibility(View.GONE);
 	}
 
@@ -849,8 +870,8 @@ public class KillerGameActivity extends BaseActivity implements
 					// If killer killed Killer
 					// judge killer count
 					if (0 == getPlayerCount(Killers.Killer)) {
-						// game over,police & civilian win
-						mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_KILLER_OVER), 1000);
+						// game over, killer lose
+						mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_KILLER_LOSE), 1000);
 						return false;
 					}
 				}
@@ -888,11 +909,11 @@ public class KillerGameActivity extends BaseActivity implements
 	}
 	
 	/**get police list*/
-	private List<Integer> getPoliceList(){
+	private List<Integer> getPlayerList(Killers player){
 		List<Integer> list = new ArrayList<Integer>();
-		for (KPlayer player : mPlayerLists) {
-			if (Killers.Police == player.getIdentity()) {
-				list.add(player.getNumber());
+		for (KPlayer kPlayer : mPlayerLists) {
+			if (player == kPlayer.getIdentity()) {
+				list.add(kPlayer.getNumber());
 			}
 		}
 		return list;
@@ -1028,6 +1049,76 @@ public class KillerGameActivity extends BaseActivity implements
 				role.add(2);
 			}
 		}
+	}
+	
+	/**
+	 * get Killer win item View
+	 * @param killerNumber the killer number
+	 * @param index the killer index,like: the n killer
+	 * @return item view
+	 */
+	private View getKillerWinItemView(int killerNumber, int index){
+		View killerWinItemView = null;
+		ImageView killerWinBg = null;
+		ImageView killerWinPhoto = null;
+		TextView killerWinNum = null;
+		
+		killerWinItemView = getLayoutInflater().inflate(R.layout.killer_win_item, null);
+		killerWinBg = (ImageView) killerWinItemView.findViewById(R.id.killer_win_bg);
+		killerWinPhoto = (ImageView) killerWinItemView.findViewById(R.id.killer_avatar_photo);
+		killerWinNum = (TextView) killerWinItemView.findViewById(R.id.killer_win_num);
+		killerWinNum.setText(getString(R.string.n_number, killerNumber));
+		
+		Bitmap bitmap = mPlayerLists.get(killerNumber - 1).getHeadIcon();
+		if (bitmap != null) {
+			killerWinPhoto.setImageBitmap(bitmap);
+		} else {
+			killerWinPhoto.setImageResource(R.drawable.killer_profile_color);
+		}
+		
+		switch (index) {
+		case 0:
+			killerWinBg.setImageResource(R.drawable.killer_win_redflag);
+			break;
+		case 1:
+			killerWinBg.setImageResource(R.drawable.killer_win_blueflag);
+			break;
+		case 2:
+			killerWinBg.setImageResource(R.drawable.killer_win_greenflag);
+			break;
+		case 3:
+			killerWinBg.setImageResource(R.drawable.killer_win_yellowflag);
+			break;
+		default:
+			break;
+		}
+		
+		return killerWinItemView;
+	}
+	
+	/**
+	 * get Killer lose item view
+	 * @param killerNumber the killer number
+	 */
+	private View getKillerLoseItemView(int killerNumber){
+		ImageView imageView = new ImageView(getApplicationContext());
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT, 
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		int marginRight = (int) getResources().getDimension(R.dimen.gridview_vertion_space);
+		params.setMargins(0, 0, marginRight, 0);
+		
+		imageView.setLayoutParams(params);
+		imageView.setScaleType(ScaleType.CENTER_CROP);
+		
+		Bitmap bitmap = mPlayerLists.get(killerNumber - 1).getHeadIcon();
+		if (bitmap != null) {
+			imageView.setImageBitmap(bitmap);
+		} else {
+			imageView.setImageResource(R.drawable.killer_grey);
+		}
+		
+		return imageView;
 	}
 	
 	private void showExitGameDialog(){

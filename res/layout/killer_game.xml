@@ -98,8 +98,8 @@
          />
 
     <include
-        android:id="@+id/killer_over"
-        layout="@layout/killer_over"
+        android:id="@+id/killer_lose"
+        layout="@layout/killer_lose"
         android:visibility="gone" />
 
     <include

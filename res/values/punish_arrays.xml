@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="punish_state">
+        <item>惊奇地</item>
+        <item>狰狞地</item>
+        <item>妩媚地</item>
+        <item>痛苦地</item>
+        <item>享受地</item>
+        <item>绝情地</item>
+        <item>傻笑着</item>
+        <item>兴奋地</item>
+        <item>疯狂地</item>
+        <item>深情地</item>
+        <item>呆滞地</item>
+        <item>惊奇地</item>
+        <item>绝望地</item>
+        <item>伤心地</item>
+        <item>委屈地</item>
+    </string-array>
+     <string-array name="punish_action">
+        <item>找一个男生一边捶他的胸，一边说：你好讨厌哦</item>
+        <item>学小狗小便</item>
+        <item>打飞机</item>
+        <item>站在凳子上表演大猩猩捶胸咆哮10秒</item>
+        <item>把脑袋夹在咯吱窝底下15秒</item>
+        <item>闻咯吱窝，并作出对应的表情</item>
+        <item>抱起身边体重最重的朋友</item>
+        <item>试着努力放个屁</item>
+        <item>用身体先摆个S的形状，再摆个B的形状</item>
+        <item>把右边第一个异性横抱起来：“今晚你归我啦！”</item>
+        <item>躺在地上装死</item>
+        <item>你本来就很美</item>
+        <item>闻自己的袜子10秒</item>
+        <item>慢慢脱下大家指定的一件衣服</item>
+        <item>打喷嚏同时原地转10圈</item>
+        <item>用胳膊帮右手边第一位异性量胸围</item>
+        <item>模仿喝一杯烈酒</item>
+        <item>学青蛙叫10声</item>
+        <item>扭屁股10秒</item>
+        <item>大声说：凤姐，我不能失去你啊</item>
+        <item>边吻一个物品边发出陶醉的声音：“嗯，嗯” 15秒</item>
+    </string-array>
+</resources>

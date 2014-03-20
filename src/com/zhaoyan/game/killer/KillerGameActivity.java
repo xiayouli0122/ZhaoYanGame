@@ -308,7 +308,7 @@ public class KillerGameActivity extends BaseActivity implements
 					indetity = getString(R.string.civilian);
 				}
 				
-				if (getPlayerCount(Killers.Killer) >= getDeadCount()) {
+				if (getPlayerLivedCount(Killers.Killer) >= getPlayerDeadCount()) {
 					Log.d(TAG, "the dead has something to say");
 					//死者有遗言
 					statusTip = getString(R.string.killer_person_status, mCurrentKillerIndex, indetity);
@@ -852,38 +852,38 @@ public class KillerGameActivity extends BaseActivity implements
 				mCurrentKilledIndetity = player.getIdentity();
 				mCurrentKillerIndex = player.getNumber();
 				if (Killers.Police == mCurrentKilledIndetity) {
-					Log.d(TAG, "you killed a police");
+					Log.d(TAG, "a police is dead");
 					// If killer killed police
 					// judge police count
-					if (0 == getPlayerCount(Killers.Police)) {
+					if (0 == getPlayerLivedCount(Killers.Police)) {
 						// game over,killer win
-						mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_KILLER_WIN), 1000);
+						mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_KILLER_WIN), 500);
 						return false;
 					}
 				} else if (Killers.Cilivian == mCurrentKilledIndetity) {
-					Log.d(TAG, "you killed a Cilivian");
+					Log.d(TAG, "a civilian is dead");
 					// If killer killed civilian
 					// judge civilian count
-					if (0 == getPlayerCount(Killers.Cilivian)) {
+					if (0 == getPlayerLivedCount(Killers.Cilivian)) {
 						// game over,killer win
-						mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_KILLER_WIN), 1000);
+						mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_KILLER_WIN), 500);
 						return false;
 					}
 				} else {
-					Log.d(TAG, "you killed a Killer");
+					Log.d(TAG, "a killer is dead");
 					// If killer killed Killer
 					// judge killer count
-					if (0 == getPlayerCount(Killers.Killer)) {
+					if (0 == getPlayerLivedCount(Killers.Killer)) {
 						// game over, killer lose
-						mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_KILLER_LOSE), 1000);
+						mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_KILLER_LOSE), 500);
 						return false;
 					}
 				}
 				// going on
 				if (mStatus == VOTE) {
-					mHandler.sendEmptyMessageDelayed(MSG_KILL_RESULT, 1000);
+					mHandler.sendEmptyMessageDelayed(MSG_KILL_RESULT, 500);
 				} else {
-					mHandler.sendEmptyMessageDelayed(MSG_CHECK_GUIDE, 1000);
+					mHandler.sendEmptyMessageDelayed(MSG_CHECK_GUIDE, 500);
 				}
 			}
 		}
@@ -891,7 +891,7 @@ public class KillerGameActivity extends BaseActivity implements
 	}
 
 	/**get spec player people num,获得指定身份还活着的人数*/
-	private int getPlayerCount(Killers killer) {
+	private int getPlayerLivedCount(Killers killer) {
 		int count = 0;
 		for (KPlayer player : mPlayerLists) {
 			if (killer == player.getIdentity() && !player.isDead()) {
@@ -902,7 +902,7 @@ public class KillerGameActivity extends BaseActivity implements
 	}
 	
 	/**get dead people number*/
-	private int getDeadCount(){
+	private int getPlayerDeadCount(){
 		int count = 0;
 		for(KPlayer player : mPlayerLists){
 			if (player.isDead()) {
@@ -912,7 +912,11 @@ public class KillerGameActivity extends BaseActivity implements
 		return count;
 	}
 	
-	/**get police list*/
+	/**
+	 * get spec player list
+	 * @param player
+	 * @return
+	 */
 	private List<Integer> getPlayerList(Killers player){
 		List<Integer> list = new ArrayList<Integer>();
 		for (KPlayer kPlayer : mPlayerLists) {

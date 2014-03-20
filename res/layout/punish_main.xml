@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView
+        android:id="@+id/punish_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="70.0dip"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/punishment_bottom" />
+
+    <LinearLayout
+        android:id="@+id/punish_board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/punish_box"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-10.0dip"
+        android:background="@drawable/punishment_brand"
+        android:paddingLeft="20.0dip"
+        android:paddingTop="80.0dip" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10.0dip"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView 
+                    android:id="@+id/tv_state"
+                    android:layout_width="230.0dip"
+                    android:layout_height="60.0dip"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:background="@drawable/wheel_bg"
+                    android:text="梦想着"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    />
+
+                <ImageView
+                    android:layout_width="236.0dip"
+                    android:layout_height="64.0dip"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/punishment_box"
+                    android:contentDescription="@string/app_name" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp" >
+
+                 <TextView 
+                    android:id="@+id/tv_action"
+                    android:layout_width="230.0dip"
+                    android:layout_height="60.0dip"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:background="@drawable/wheel_bg"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    />
+
+                <ImageView
+                    android:layout_width="236.0dip"
+                    android:layout_height="64.0dip"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/punishment_box"
+                    android:contentDescription="@string/app_name" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <ToggleButton
+            android:id="@+id/punish_troggle"
+            android:layout_width="47.0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/handle_up"
+            android:paddingTop="10.0dip"
+            android:textOff=""
+            android:textOn="" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/punish_operation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:contentDescription="@string/app_name" >
+
+        <ImageView
+            android:id="@+id/iv_punish_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/fool_drawable_back" />
+
+        <ImageView
+            android:id="@+id/iv_punish_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/punish_rank" />
+
+        <ImageView
+            android:id="@+id/iv_punish_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/fool_drawable_help" />
+    </RelativeLayout>
+
+<!--     <include -->
+<!--         android:id="@+id/punish_intro" -->
+<!--         layout="@layout/punish_intro" -->
+<!--         android:visibility="gone" /> -->
+
+</RelativeLayout>

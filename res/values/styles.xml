@@ -21,6 +21,10 @@
         <item name="android:windowNoTitle">true</item>
     </style>
     
+   	<style name="PunishTheme" parent="android:Theme.Black.NoTitleBar.Fullscreen">
+        <item name="android:windowBackground">@drawable/punishment_bg</item>
+    </style>
+    
    	 <style name="KillerNumber">
         <item name="android:textSize">18.0sp</item>
         <item name="android:textColor">@color/white</item>

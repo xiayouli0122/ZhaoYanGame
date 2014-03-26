@@ -4,5 +4,7 @@
     <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
     <color name="list_hide">#ff0c2c5c</color>
+    <color name="player_num">#fff2b216</color>
     <color name="killer_phrase_tip">#ffbf7f0e</color>
+    <color name="win_bg">#ff024d9a</color>
 </resources>

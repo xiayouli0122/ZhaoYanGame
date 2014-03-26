@@ -28,8 +28,8 @@ public class PunishMainActivity extends BaseActivity implements OnClickListener{
 	private Timer mStateTimer = null;
 	private Timer mActionTimer = null;
 	
-	private int mStateCount = 60;
-	private int mActionCount = 60;
+	private int mStateCount = 40;
+	private int mActionCount = 40;
 	private int count2 = 0;
 	private int cycle = 1;
 	
@@ -85,7 +85,6 @@ public class PunishMainActivity extends BaseActivity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.punish_main);
-		
 		mStateTV = (TextView) findViewById(R.id.tv_state);
 		mActionTV = (TextView) findViewById(R.id.tv_action);
 		mAgainBtn = (ToggleButton) findViewById(R.id.punish_troggle);

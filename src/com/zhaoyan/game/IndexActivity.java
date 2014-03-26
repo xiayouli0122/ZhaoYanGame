@@ -2,6 +2,7 @@ package com.zhaoyan.game;
 
 import com.zhaoyan.game.killer.KillerGameActivity;
 import com.zhaoyan.game.punish.PunishMainActivity;
+import com.zhaoyan.game.spy.SpyMainActivity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -54,7 +55,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener {
 			openActivity(KillerGameActivity.class);
 			break;
 		case R.id.game_spy:
-			showToast("game_spy");
+			openActivity(SpyMainActivity.class);
 			break;
 		case R.id.game_fool:
 			showToast("game_fool");

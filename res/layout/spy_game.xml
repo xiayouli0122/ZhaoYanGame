@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wrapper"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/spy_bluewaves_bg"
+    android:baselineAligned="false" >
+
+    <ImageView
+        android:id="@+id/bottom_pic"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/spy_red_bg"
+        android:contentDescription="@string/app_name" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <TextView
+            android:id="@+id/tv_status_tip"
+            style="@style/LabelTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:id="@+id/rl_avatar_container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/tv_status_tip"
+            android:layout_centerInParent="true"
+            >
+
+            <GridView
+                android:id="@+id/gv_avatar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:listSelector="#00000000" />
+
+            <ProgressBar
+                android:id="@+id/pb_vote"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/iv_word_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/spy_btn_card" />
+
+            <RelativeLayout
+                android:id="@+id/rl_word_show_container"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="invisible" >
+
+                <ImageView
+                    android:id="@+id/word_card_showing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/spy_bg_card_showing" 
+                    />
+
+                <LinearLayout
+                    android:id="@+id/camera_container"
+                    android:layout_width="80.0dip"
+                    android:layout_height="80.0dip"
+                    android:layout_above="@+id/tv_spy_word"
+                    android:layout_centerHorizontal="true"
+                    android:clipChildren="true"
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        android:id="@+id/existed_avatar"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/default_killer_03"
+                        android:visibility="gone"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_spy_word"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/black"
+                    android:textSize="15.0sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:contentDescription="@string/app_name" >
+
+        <ImageView
+            android:id="@+id/iv_octopus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
+            android:paddingBottom="20.0dip"
+            android:src="@drawable/spy_select_octopus"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iv_spy_gotit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/app_name"
+            android:paddingBottom="60.0dip"
+            android:src="@drawable/spy_drawable_gotit"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10.0dip"
+        android:paddingLeft="10.0dip"
+        android:paddingRight="10.0dip" >
+
+        <ImageView
+            android:id="@+id/iv_btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/spy_drawable_back" />
+
+        <ImageView
+            android:id="@+id/iv_btn_forget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/spy_drawable_forget"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/btn_retake"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/spy_drawable_retake"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/spy_game_over"
+        layout="@layout/spy_over"
+        android:visibility="gone" />
+
+</RelativeLayout>

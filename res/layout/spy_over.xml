@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/win_bg" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/footer" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/iv_shining_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/common_bg_shining" />
+
+            <RelativeLayout
+                android:id="@+id/win_board"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50.0dip" >
+
+                <ImageView
+                    android:id="@+id/iv_win_board"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@string/app_name" />
+
+                <LinearLayout
+                    android:id="@+id/ll_win_num_and_icons"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/iv_win_board"
+                    android:layout_alignLeft="@id/iv_win_board"
+                    android:layout_alignRight="@id/iv_win_board"
+                    android:layout_marginBottom="30.0dip"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/win_num_character"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="135.0dip" />
+
+            <RelativeLayout
+                android:id="@+id/spy_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/win_board"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10.0dip" >
+
+                <TextView
+                    android:id="@+id/tv_spy_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5.0dip"
+                    android:drawableRight="@drawable/spy_number"
+                    android:textColor="#ffffe78c"
+                    android:textSize="26.0sp"
+                    android:typeface="serif" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_blank_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spy_no"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2.0dip" >
+
+                <TextView
+                    android:id="@+id/tv_blank_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5.0dip"
+                    android:drawableRight="@drawable/blank_number_small"
+                    android:textColor="#ffffffff"
+                    android:textSize="26.0sp"
+                    android:typeface="serif" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/spy_info"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_blank_no"
+                android:layout_marginTop="10.0dip"
+                android:gravity="center_horizontal" >
+
+                <LinearLayout
+                    android:id="@+id/spy_words_words"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <ImageView
+                            android:id="@+id/spy_words_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/spy_word" />
+
+                        <TextView
+                            android:id="@+id/tv_spy_over_spy_word"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/spy_words_label"
+                            android:paddingBottom="4.0dip"
+                            android:paddingLeft="10.0dip"
+                            android:textColor="#ffffffff"
+                            android:textSize="22.0sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <ImageView
+                            android:id="@+id/civilian_words_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/civilian_word" />
+
+                        <TextView
+                            android:id="@+id/tv_spy_over_civilian_word"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/civilian_words_label"
+                            android:paddingBottom="4.0dip"
+                            android:paddingLeft="10.0dip"
+                            android:textColor="#ffffffff"
+                            android:textSize="22.0sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <ToggleButton
+                    android:id="@+id/tb_spy_words_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="10.0dip"
+                    android:layout_toRightOf="@id/spy_words_words"
+                    android:background="@drawable/switch_like"
+                    android:textOff=""
+                    android:textOn="" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/spy_punish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spy_info"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10.0dip" >
+
+                <ImageView
+                    android:id="@+id/iv_btn_punish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/common_drawable_punish" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10.0dip"
+        android:paddingLeft="10.0dip"
+        android:paddingRight="10.0dip" >
+
+        <ImageView
+            android:id="@+id/iv_btn_tospy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/common_drawable_back" />
+
+        <ImageView
+            android:id="@+id/iv_btn_restart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/common_drawable_restart" />
+
+        <ImageView
+            android:id="@+id/iv_btn_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/common_btn_share" />
+    </RelativeLayout>
+
+</RelativeLayout>

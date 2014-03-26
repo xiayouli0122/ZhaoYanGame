@@ -1044,16 +1044,20 @@ public class KillerGameActivity extends BaseActivity implements
 	 * @param totalNumber
 	 */
 	private void initAllPlayerIdentity(int killerNumber, int totalNumber) {
+		Log.d(TAG, "totalNumber:" + totalNumber + ",killerNumber:" + killerNumber);
 		if (role == null)
 			role = new ArrayList<Integer>();
 		else
 			role.clear();
 		for (int i = 0; i < totalNumber; i++) {
+			Log.d(TAG, "i=" + i);
 			if (i < 2 * killerNumber) {
+				Log.d(TAG, "=========");
 				role.add(0);
 				role.add(1);
 				i++;
 			} else {
+				Log.d(TAG, "*************");
 				role.add(2);
 			}
 		}

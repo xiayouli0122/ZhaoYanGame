@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/spy_darkblue_bg" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/spy_waves_bg"
+        android:paddingLeft="5.0dip"
+        android:paddingRight="5.0dip" >
+
+        <HorizontalScrollView
+            android:id="@+id/hsv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="25.0dip"
+            android:layout_marginRight="25.0dip"
+            android:fillViewport="true"
+            android:measureAllChildren="false"
+            android:scrollbars="none" >
+
+            <LinearLayout
+                android:id="@+id/innerLay"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:id="@+id/cate_guess_cate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                     >
+
+                    <ImageButton
+                        android:id="@+id/ib_spy_cate_guess"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/spy_drawable_words"
+                        android:contentDescription="@string/app_name" />
+
+                    <TextView
+                        android:id="@+id/cate_guess_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_centerInParent="true"
+                        android:text="@string/spy_cate_guess" />
+
+                    <TextView
+                        android:id="@+id/tv_spy_cate_guess_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:singleLine="true"
+                        android:layout_alignBottom="@id/ib_spy_cate_guess"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="5.0dip" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/cate_my"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" 
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    >
+
+                    <ImageButton
+                        android:id="@+id/ib_spy_cate_my"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/spy_drawable_words"
+                        android:contentDescription="@string/app_name" />
+
+                    <TextView
+                        android:id="@+id/cate_my_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/spy_cate_my" 
+                        android:textColor="@color/white"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_spy_cate_my_count"
+                        style="@style/SpyCateCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/ib_spy_cate_my"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="5.0dip" />
+
+                    <ImageButton
+                        android:id="@+id/ib_spy_cate_my_add"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/ib_spy_cate_my"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/spy_plusword"
+                        android:contentDescription="@string/app_name" />
+                </RelativeLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <ImageView
+            android:id="@+id/iv_left_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/spy_arrow_left" />
+
+        <ImageView
+            android:id="@+id/iv_right_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/spy_arrow_right" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/spy_brand_bg"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/total"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30.0dip"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/player_words" />
+
+            <ImageView
+                android:id="@+id/player_num_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20.0dip"
+                android:contentDescription="@string/app_name"
+                android:paddingLeft="43.0dip"
+                android:src="@drawable/player_number_bg" />
+
+            <TextView
+                android:id="@+id/tv_player_num"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="38.0dip"
+                android:paddingTop="20.0dip"
+                android:textColor="@color/player_num"
+                android:textSize="26.0sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10.0dip"
+            android:gravity="center_vertical" >
+
+            <ImageView
+                android:id="@+id/iv_spy_subtract"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/spy_subtract_btn" />
+
+            <SeekBar
+                android:id="@+id/sb_player_num_slide"
+                android:layout_width="210.0dip"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:max="12"
+                android:maxHeight="32.0dip"
+                android:minHeight="32.0dip"
+                android:progressDrawable="@drawable/spy_seek_drawable"
+                android:thumb="@drawable/spy_seek_thumb"
+                android:thumbOffset="4.0dip" />
+
+            <ImageView
+                android:id="@+id/iv_spy_plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/spy_plus_btn" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10.0dip" >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/civilian_words_bg" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/civilian_words" />
+
+                <TextView
+                    android:id="@+id/tv_civilian_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="18.0dip"
+                    android:text="@string/def_play_num"
+                    android:textColor="@color/white"
+                    android:textSize="18.0sp" />
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5.0dip"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/division_line" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/wodi_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/spy_words" />
+
+                <TextView
+                    android:id="@+id/tv_spy_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginRight="20.0dip"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15.0dip"
+                    android:text="@string/def_spy_num"
+                    android:textColor="@color/white"
+                    android:textSize="18.0sp" />
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5.0dip"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/division_line" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/blank_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/blank_words" />
+
+                <ToggleButton
+                    android:id="@+id/tb_spy_switch_blank"
+                    android:layout_width="48.0dip"
+                    android:layout_height="29.0dip"
+                    android:layout_marginLeft="5.0dip"
+                    android:background="@drawable/spy_switch_blank"
+                    android:textOff=""
+                    android:textOn="" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/spy_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/spy_red_bg"
+        android:contentDescription="@string/app_name" />
+
+    <ImageView
+        android:id="@+id/iv_spy_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32.0dip"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/btn_spy_startgame" />
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10.0dip"
+        android:paddingLeft="10.0dip"
+        android:paddingRight="10.0dip" >
+
+        <ImageView
+            android:id="@+id/iv_spy_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/spy_drawable_back" />
+
+        <ImageView
+            android:id="@+id/iv_spy_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/spy_drawable_video" />
+    </RelativeLayout>
+
+</RelativeLayout>

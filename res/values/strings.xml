@@ -34,5 +34,21 @@
     
     <string name="finish_confirm">确定要结束本轮游戏吗？</string>
     
+    <string name="spy_cate_friends">朋友</string>
+    <string name="spy_cate_school">校园</string>
+    <string name="spy_cate_family">家庭</string>
+    <string name="spy_cate_guess">友猜</string>
+    <string name="spy_cate_my">我的词库</string>
+    <string name="def_play_num">6</string>
+    <string name="def_spy_num">1</string>
+    
+    <string name="spy_flop">%1$d号请翻牌</string>
+    <string name="spy_flop_two">传递手机,%1$d号请翻牌</string>
+    <string name="spy_status_vote">%1$d号玩家先发言，所有人都发言后投票</string>
+    <string name="spy_vote_tip">请长按进行投票</string>
+    <string name="spy_blank_dead">%1$d号是白板,%2$d号玩家继续新一轮的发言</string>
+    <string name="spy_spy_dead">%1$d号是卧底,%2$d号玩家继续新一轮的发言</string>
+    <string name="spy_civilian_dead">%1$d号是平民,%2$d号玩家继续新一轮的发言</string>
+    
 
 </resources>

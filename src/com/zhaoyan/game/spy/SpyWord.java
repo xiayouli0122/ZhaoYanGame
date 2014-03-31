@@ -51,13 +51,12 @@ public class SpyWord implements Parcelable {
 	
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(word1);
-		dest.writeString(word1);
+		dest.writeString(word2);
 	}
 	
 	public void readFromParcel(Parcel src){

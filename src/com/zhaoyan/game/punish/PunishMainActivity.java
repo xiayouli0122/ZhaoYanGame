@@ -28,8 +28,10 @@ public class PunishMainActivity extends BaseActivity implements OnClickListener{
 	private Timer mStateTimer = null;
 	private Timer mActionTimer = null;
 	
-	private int mStateCount = 40;
-	private int mActionCount = 40;
+	private static final int DEFAULT_COUNT = 40;
+	
+	private int mStateCount = DEFAULT_COUNT;
+	private int mActionCount = DEFAULT_COUNT;
 	private int count2 = 0;
 	private int cycle = 1;
 	
@@ -41,7 +43,7 @@ public class PunishMainActivity extends BaseActivity implements OnClickListener{
 			case MSG_UPDATE_STATE:
 				String stateText = "";
 				if (mStateCount == 0) {
-					mStateCount = 60;
+					mStateCount = DEFAULT_COUNT;
 					mStateTimer.cancel();
 					stateText = mStates[(int)(Math.random() * mStates.length)];
 					mStateTV.setText(stateText);
@@ -59,7 +61,7 @@ public class PunishMainActivity extends BaseActivity implements OnClickListener{
 			case MSG_UPDATE_ACTION:
 				String actionText = "";
 				if (mActionCount == 0) {
-					mActionCount = 60;
+					mActionCount = DEFAULT_COUNT;
 					mActionTimer.cancel();
 					actionText = mActions[(int)(Math.random() * mStates.length)];
 					mActionTV.setText(actionText);
@@ -132,6 +134,9 @@ public class PunishMainActivity extends BaseActivity implements OnClickListener{
 			mAgainBtn.setBackgroundResource(R.drawable.handle_down);
 			startStateTimer();
 			startActionTimer();
+			break;
+		case R.id.iv_punish_back:
+			finish();
 			break;
 
 		default:

@@ -3,6 +3,7 @@ package com.zhaoyan.game.spy;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -75,9 +76,8 @@ public class SpyMainActivity extends BaseActivity implements OnClickListener, On
 		Cursor cursor = db.query(SpyColumns.TABLE_NAME, null, null, null, null, null, null);
 		SpyWord word = null;
 		if (cursor != null && cursor.getCount() != 0) {
-			//there has data,do nothing
-			word = new SpyWord();
 			while (cursor.moveToNext()) {
+				word = new SpyWord();
 				String word1 = cursor.getString(cursor.getColumnIndex(SpyColumns.WORD1));
 				String word2 = cursor.getString(cursor.getColumnIndex(SpyColumns.WORD2));
 				int group = cursor.getInt(cursor.getColumnIndex(SpyColumns.GROUP));
@@ -94,9 +94,10 @@ public class SpyMainActivity extends BaseActivity implements OnClickListener, On
 			}
 		} 
 		cursor.close();
+		db.close();
 		
-		mMyCountTV.setText(mMyWordsList.size() + "´Ê");
-		mGuessCountTV.setText(mGuessWordsList.size() + "´Ê");
+		mMyCountTV.setText(getString(R.string.spy_word_tip, mMyWordsList.size()));
+		mGuessCountTV.setText(getString(R.string.spy_word_tip, mGuessWordsList.size()));
 	}
 	
 	private void initView(){
@@ -195,10 +196,12 @@ public class SpyMainActivity extends BaseActivity implements OnClickListener, On
 			bundle.putInt(SpyConstant.EXTRA_TOTAL_PLAYER_NUM, mTotalPlayerNum);
 			bundle.putInt(SpyConstant.EXTRA_SPY_NUM, mSpyNum);
 			bundle.putBoolean(SpyConstant.EXTRA_HAS_BLANK, mHasBlank);
-			List<SpyWord> wordList = getWordsList();
-			int pos = (int) (Math.random() * wordList.size());
-			bundle.putParcelable(SpyConstant.EXTRA_WORD, wordList.get(pos));
-			openActivity(SpyGameActivity.class, bundle);
+			ArrayList<SpyWord> wordList = (ArrayList<SpyWord>) getWordsList();
+			bundle.putParcelableArrayList(SpyConstant.EXTRA_WORD, wordList);
+			Intent intent = new Intent(SpyMainActivity.this, SpyGameActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			intent.putExtras(bundle);
+			startActivityForResult(intent, 0);
 			overridePendingTransition(0, 0);
 			break;
 		case R.id.iv_spy_back:
@@ -260,6 +263,34 @@ public class SpyMainActivity extends BaseActivity implements OnClickListener, On
 			return mGuessWordsList;
 		default:
 			return null;
+		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == RESULT_OK) {
+			SQLiteDatabase db = mDbHelper.getReadableDatabase();
+			String selection = SpyColumns.GROUP + "=" + SpyConstant.MY_WORDS;
+			Cursor cursor = db.query(SpyColumns.TABLE_NAME, null, selection, null, null, null, null);
+			SpyWord word = null;
+			if (cursor != null && cursor.getCount() != 0) {
+				mMyWordsList.clear();
+				while (cursor.moveToNext()) {
+					word = new SpyWord();
+					String word1 = cursor.getString(cursor.getColumnIndex(SpyColumns.WORD1));
+					String word2 = cursor.getString(cursor.getColumnIndex(SpyColumns.WORD2));
+					int group = cursor.getInt(cursor.getColumnIndex(SpyColumns.GROUP));
+					
+					word.setWord1(word1);
+					word.setWord2(word2);
+					word.setGroup(group);
+					mMyWordsList.add(word);
+				}
+			} 
+			cursor.close();
+			db.close();
+			mMyCountTV.setText(getString(R.string.spy_word_tip, mMyWordsList.size()));
 		}
 	}
 }

@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Dialog;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -22,6 +26,9 @@ import android.widget.ToggleButton;
 
 import com.zhaoyan.game.BaseActivity;
 import com.zhaoyan.game.R;
+import com.zhaoyan.game.db.DBHelper;
+import com.zhaoyan.game.db.DbData;
+import com.zhaoyan.game.db.DbData.SpyColumns;
 import com.zhaoyan.game.dialog.ConfirmDialog;
 import com.zhaoyan.game.dialog.ConfirmDialog.ZYOnClickListener;
 import com.zhaoyan.game.punish.PunishMainActivity;
@@ -67,6 +74,8 @@ public class SpyGameActivity extends BaseActivity implements OnClickListener, On
 	
 	private SpyAvatarAdapter mAvatarAdapter;
 	
+	private DBHelper mDbHelper = null;
+	
 	private static final int INIT = 0;
 	private static final int START = 1;
 	private int mStatus = INIT;
@@ -97,7 +106,9 @@ public class SpyGameActivity extends BaseActivity implements OnClickListener, On
 			mTotalPlayerNum = bundle.getInt(SpyConstant.EXTRA_TOTAL_PLAYER_NUM);
 			mSpyNum = bundle.getInt(SpyConstant.EXTRA_SPY_NUM);
 			mHasBlank = bundle.getBoolean(SpyConstant.EXTRA_HAS_BLANK);
-			SpyWord spyWord = bundle.getParcelable(SpyConstant.EXTRA_WORD);
+			List<SpyWord> wordList = bundle.getParcelableArrayList(SpyConstant.EXTRA_WORD);
+			int pos = (int) (Math.random() * wordList.size());
+			SpyWord spyWord = wordList.get(pos);
 			mWords[0] = spyWord.getWord1();
 			mWords[1] = spyWord.getWord2();
 			initWord();
@@ -108,6 +119,7 @@ public class SpyGameActivity extends BaseActivity implements OnClickListener, On
 					+ "word1:" + mWords[0] + ","
 					+ "word2:" + mWords[1]);
 		}
+		mDbHelper = new DBHelper(getApplicationContext(), DbData.DATABASE_NAME, null, DbData.DATABASE_VERSION);
 		
 		initView();
 		setGridViewParmars();
@@ -115,6 +127,7 @@ public class SpyGameActivity extends BaseActivity implements OnClickListener, On
 		mGridView.setAdapter(mAvatarAdapter);
 		//
 		mStatusTipTV.setText(getString(R.string.spy_flop, mIndex));
+		setResult(RESULT_CANCELED);
 	}
 	
 	private void initView(){
@@ -145,6 +158,15 @@ public class SpyGameActivity extends BaseActivity implements OnClickListener, On
 		mSpyWordTV = (TextView) mOverView.findViewById(R.id.tv_spy_over_spy_word);
 		mCivilianWordTV = (TextView) mOverView.findViewById(R.id.tv_spy_over_civilian_word);
 		mLikeTB = (ToggleButton) mOverView.findViewById(R.id.tb_spy_words_like);
+		boolean isExist = isWordExist();
+		Log.d(TAG, "is exist=" + isExist);
+		if (isExist) {
+			mLikeTB.setChecked(false);
+			mLikeTB.setClickable(false);
+		} else {
+			mLikeTB.setChecked(true);
+			mLikeTB.setClickable(true);
+		}
 		mPunishIV = (ImageView) mOverView.findViewById(R.id.iv_btn_punish);
 		mBackToIV = (ImageView) mOverView.findViewById(R.id.iv_btn_tospy);
 		mRestartIV = (ImageView) mOverView.findViewById(R.id.iv_btn_restart);
@@ -287,6 +309,22 @@ public class SpyGameActivity extends BaseActivity implements OnClickListener, On
 		default:
 			break;
 		}
+	}
+	
+	private boolean isWordExist(){
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		String selection = SpyColumns.WORD1 + "=?"
+				+ " and " + SpyColumns.GROUP + "=" + 0;
+		String[] selectionArgs = {mWords[0]};
+		Cursor cursor = db.query(SpyColumns.TABLE_NAME, 
+				null, selection, selectionArgs, null, null, null);
+		Log.d(TAG, "cursor:" + cursor + ",curso.count=" + cursor.getCount());
+		if (cursor == null || cursor.getCount() == 0) {
+			cursor.close();
+			return false;
+		} 
+		db.close();
+		return true;
 	}
 	
 	private void showWord(String word){
@@ -479,8 +517,16 @@ public class SpyGameActivity extends BaseActivity implements OnClickListener, On
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		// TODO Auto-generated method stub
-		
+		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(SpyColumns.WORD1, mWords[0]);
+		values.put(SpyColumns.WORD2, mWords[1]);
+		values.put(SpyColumns.GROUP, 0);
+		db.insert(SpyColumns.TABLE_NAME, null, values);
+		mLikeTB.setChecked(false);
+		mLikeTB.setClickable(false);
+		showToast(getString(R.string.spy_add_to_myword));
+		setResult(RESULT_OK);
 	}
 	
 	private void showExitGameDialog(){

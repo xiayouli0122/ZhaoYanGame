@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="spy_words">
+        <item>状元,冠军</item>
+        <item>端午节,中秋节</item>
+        <item>摩托车,电动车</item>
+        <item>眉毛,胡须</item>
+        <item>高跟鞋,增高鞋</item>
+        <item>饺子,包子</item>
+        <item>蜘蛛侠,蜘蛛精</item>
+        <item>牛奶,豆浆</item>
+        <item>金庸,古龙</item>
+        <item>赵敏,黄蓉</item>
+        <item>唇膏,口红</item>
+        <item>纸巾,手帕</item>
+        <item>杭州,苏州</item>
+        <item>香港,台湾</item>
+        <item>太监,人妖</item>
+        <item>公交,地铁</item>
+        <item>剩女,御姐</item>
+        <item>结婚,订婚</item>
+    </string-array>
+</resources>

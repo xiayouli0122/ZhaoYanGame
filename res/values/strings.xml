@@ -49,6 +49,7 @@
     <string name="spy_blank_dead">%1$d号是白板,%2$d号玩家继续新一轮的发言</string>
     <string name="spy_spy_dead">%1$d号是卧底,%2$d号玩家继续新一轮的发言</string>
     <string name="spy_civilian_dead">%1$d号是平民,%2$d号玩家继续新一轮的发言</string>
-    
+    <string name="spy_add_to_myword">已收藏至我的词库</string>
+    <string name="spy_word_tip">%1$d词</string>
 
 </resources>

@@ -95,6 +95,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:textColor="@color/black"
+                    android:singleLine="false"
+                    android:maxEms="3"
+                    android:gravity="center"
                     android:textSize="55sp" />
             </RelativeLayout>
         </RelativeLayout>

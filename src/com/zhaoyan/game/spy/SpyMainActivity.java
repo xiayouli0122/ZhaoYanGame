@@ -197,6 +197,10 @@ public class SpyMainActivity extends BaseActivity implements OnClickListener, On
 			bundle.putInt(SpyConstant.EXTRA_SPY_NUM, mSpyNum);
 			bundle.putBoolean(SpyConstant.EXTRA_HAS_BLANK, mHasBlank);
 			ArrayList<SpyWord> wordList = (ArrayList<SpyWord>) getWordsList();
+			if (wordList.size() == 0) {
+				showToast(getString(R.string.spy_no_word_tip));
+				break;
+			}
 			bundle.putParcelableArrayList(SpyConstant.EXTRA_WORD, wordList);
 			Intent intent = new Intent(SpyMainActivity.this, SpyGameActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

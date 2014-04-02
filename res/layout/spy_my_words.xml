@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/my_word_bg" >
+
+    <LinearLayout
+        android:id="@+id/word_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50.0dip"
+        android:layout_marginRight="15.0dip"
+        android:orientation="horizontal"
+        android:paddingTop="20.0dip" >
+
+        <ImageView
+            android:id="@+id/my_word_manage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20.0dip"
+            android:background="@drawable/mywords_bg"
+            android:contentDescription="@string/app_name" />
+
+        <ImageView
+            android:id="@+id/iv_add_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15.0dip"
+            android:background="@drawable/edit_plus_btn"
+            android:contentDescription="@string/app_name" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pop_spy_del"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/word_title"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginRight="10.0dip"
+        android:background="@drawable/edit_words_bg"
+        android:orientation="horizontal"
+        android:paddingLeft="20.0dip"
+        android:paddingRight="20.0dip" >
+
+        <ImageView
+            android:id="@+id/civilian_word"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.0"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/edit_civilian_word" />
+
+        <ImageView
+            android:id="@+id/spy_word"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.0"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/edit_spy_word" />
+
+        <ImageView
+            android:id="@+id/edit_word"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.0"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/delete_word"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/my_words_body"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/words_footer"
+        android:layout_below="@id/pop_spy_del"
+        android:padding="10.0dip" >
+
+        <ListView
+            android:id="@+id/lv_display_words"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/edit_big_bg"
+            android:divider="@null"
+            android:padding="20.0dip" />
+
+        <ProgressBar
+            android:id="@+id/more_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/words_footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10.0dip"
+        android:paddingLeft="10.0dip" >
+
+        <ImageView
+            android:id="@+id/iv_my_word_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/spy_words_back" />
+    </LinearLayout>
+
+</RelativeLayout>

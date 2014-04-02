@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,8 +19,6 @@ import android.widget.ToggleButton;
 
 import com.zhaoyan.game.BaseActivity;
 import com.zhaoyan.game.R;
-import com.zhaoyan.game.db.DBHelper;
-import com.zhaoyan.game.db.DbData;
 import com.zhaoyan.game.db.DbData.SpyColumns;
 
 /**
@@ -45,8 +42,6 @@ public class SpyMainActivity extends BaseActivity implements OnClickListener, On
 	private List<SpyWord> mMyWordsList = new ArrayList<SpyWord>();
 	private List<SpyWord> mGuessWordsList = new ArrayList<SpyWord>();
 	
-	private DBHelper mDbHelper;
-	
 	//spy init view
 	private ImageButton mGuessWordsIB, mMyWordsIB;
 	private TextView mGuessCountTV, mMyCountTV;
@@ -69,11 +64,7 @@ public class SpyMainActivity extends BaseActivity implements OnClickListener, On
 		setPlayerNum();
 		setWordsBg();
 		
-		//get dbHelper
-		mDbHelper = new DBHelper(getApplicationContext(), DbData.DATABASE_NAME, null, DbData.DATABASE_VERSION);
-		//query db
-		SQLiteDatabase db = mDbHelper.getReadableDatabase();
-		Cursor cursor = db.query(SpyColumns.TABLE_NAME, null, null, null, null, null, null);
+		Cursor cursor = getContentResolver().query(SpyColumns.CONTENT_URI, null, null, null, null);
 		SpyWord word = null;
 		if (cursor != null && cursor.getCount() != 0) {
 			while (cursor.moveToNext()) {
@@ -94,7 +85,6 @@ public class SpyMainActivity extends BaseActivity implements OnClickListener, On
 			}
 		} 
 		cursor.close();
-		db.close();
 		
 		mMyCountTV.setText(getString(R.string.spy_word_tip, mMyWordsList.size()));
 		mGuessCountTV.setText(getString(R.string.spy_word_tip, mGuessWordsList.size()));
@@ -177,7 +167,8 @@ public class SpyMainActivity extends BaseActivity implements OnClickListener, On
 			setWordsBg();
 			break;
 		case R.id.ib_spy_cate_my_add:
-
+			Intent myWordIntent = new Intent(SpyMainActivity.this, SpyMyWordManager.class);
+			startActivityForResult(myWordIntent, 1);
 			break;
 		case R.id.iv_spy_subtract:
 			if (mProgress != 0) {
@@ -274,9 +265,8 @@ public class SpyMainActivity extends BaseActivity implements OnClickListener, On
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
-			SQLiteDatabase db = mDbHelper.getReadableDatabase();
 			String selection = SpyColumns.GROUP + "=" + SpyConstant.MY_WORDS;
-			Cursor cursor = db.query(SpyColumns.TABLE_NAME, null, selection, null, null, null, null);
+			Cursor cursor = getContentResolver().query(SpyColumns.CONTENT_URI, null, selection, null, null);
 			SpyWord word = null;
 			if (cursor != null && cursor.getCount() != 0) {
 				mMyWordsList.clear();
@@ -293,7 +283,6 @@ public class SpyMainActivity extends BaseActivity implements OnClickListener, On
 				}
 			} 
 			cursor.close();
-			db.close();
 			mMyCountTV.setText(getString(R.string.spy_word_tip, mMyWordsList.size()));
 		}
 	}

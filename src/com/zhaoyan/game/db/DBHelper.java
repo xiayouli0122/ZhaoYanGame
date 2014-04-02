@@ -15,10 +15,8 @@ public class DBHelper extends SQLiteOpenHelper {
 	 * @param factory
 	 * @param version database version
 	 */
-	public DBHelper(Context context, String name, CursorFactory factory,
-			int version) {
-		super(context, name, factory, version);
-		// TODO Auto-generated constructor stub
+	public DBHelper(Context context) {
+		super(context, DbData.DATABASE_NAME, null, DbData.DATABASE_VERSION);
 	}
 
 	@Override

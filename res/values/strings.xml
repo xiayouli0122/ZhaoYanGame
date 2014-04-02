@@ -34,6 +34,24 @@
     
     <string name="finish_confirm">确定要结束本轮游戏吗？</string>
     
+    <string name="spy_rule_title">【谁是卧底】游戏介绍</string>
+    <string name="spy_rule">"游戏规则
+
+ 1、游戏人数：要求4人以上，有3种基本身份，平民、卧底、白板，其中可以选择是否在游戏中加入白板。
+ 2、身份词：所有平民获得相同词语；卧底获得与平民相似但不同的词语（如卧底多于1人，则所有卧底词相同）；白板则不获得任何词语。
+ 3、发言：所有玩家轮流发言，描述自己的词语，既不能让卧底察觉，也要给同伴暗示。如有玩家出局则从下一位开始发言。
+ 4、投票：每轮描述完毕，所有玩家投票选出怀疑的人，得票最多者出局。如果有多人得票相同，则他们重新描述进行PK，并由剩余的人对他们进行投票。
+ 5、胜利条件：如所有卧底及白板出局，则平民获胜；当＜6人游戏时，如卧底在还剩2人时存活即获胜，当≥6人游戏时，如卧底在还剩3人时存活即获胜；如所有卧底出局且白板存活，则白板获胜。
+
+
+ 操作提示
+
+ 1、游戏开局：选择喜欢的词库，及参与游戏人数，即可开始游戏。
+ 2、发言顺序：每一局系统会随机一名玩家率先发言，其他玩家按顺序轮流发言。
+ 3、投票：游戏投票阶段请通过长按头像进行投票。
+ 4、忘词：如果忘记自己的词，须先点击”忘词了“后，再点击自己的头像查看。已经出局的玩家也可通过此方法查看每个人的词。
+ 5、我的词库：玩家可添加词语，游戏开局时选择”我的词库“即可与朋友们玩自定义词库。"</string>
+ 
     <string name="spy_cate_friends">朋友</string>
     <string name="spy_cate_school">校园</string>
     <string name="spy_cate_family">家庭</string>
@@ -49,8 +67,11 @@
     <string name="spy_blank_dead">%1$d号是白板,%2$d号玩家继续新一轮的发言</string>
     <string name="spy_spy_dead">%1$d号是卧底,%2$d号玩家继续新一轮的发言</string>
     <string name="spy_civilian_dead">%1$d号是平民,%2$d号玩家继续新一轮的发言</string>
-    <string name="spy_add_to_myword">已收藏至我的词库</string>
+    <string name="spy_add_to_myword">成功添加到我的词库</string>
     <string name="spy_word_tip">%1$d词</string>
     <string name="spy_no_word_tip">我的词库没有词语，请重新选择</string>
+    <string name="spy_delete_word_tip">确定删除本条词组嘛？</string>
+    <string name="spy_word_null">词组不能为空</string>
+    <string name="spy_word_exist">词组已存在</string>
 
 </resources>

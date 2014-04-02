@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/tv_err_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="30.0dip"
+        android:textColor="@color/white"
+        android:textSize="16.0sp" />
+
+    <LinearLayout
+        android:id="@+id/pop_word"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_err_msg"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30.0dip"
+        android:paddingTop="5.0dip" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/add_civilianword" />
+
+        <EditText
+            android:id="@+id/et_civilian_word"
+            android:layout_width="200.0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10.0dip"
+            android:background="@drawable/input"
+            android:inputType="text"
+            android:maxLength="10"
+            android:paddingLeft="5.0dip" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/spy_word"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pop_word"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30.0dip"
+        android:paddingTop="20.0dip" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/add_spyword" />
+
+        <EditText
+            android:id="@+id/et_spy_word"
+            android:layout_width="200.0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10.0dip"
+            android:background="@drawable/input"
+            android:inputType="text"
+            android:maxLength="10"
+            android:paddingLeft="5.0dip" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spy_word"
+        android:layout_centerInParent="true"
+        android:paddingTop="30.0dip" >
+
+        <ImageView
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:paddingRight="20.0dip"
+            android:src="@drawable/cancel" />
+
+        <ImageView
+            android:id="@+id/btn_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:paddingLeft="20.0dip"
+            android:src="@drawable/add" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,35 +1,38 @@
 package com.zhaoyan.game.dialog;
 
-import com.zhaoyan.game.R;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
-public class ConfirmDialog extends Dialog implements android.view.View.OnClickListener {
-	private ImageView mConfirmBtn,mCancelBtn;
+import com.zhaoyan.game.R;
+
+public class AddWordDialog extends Dialog implements android.view.View.OnClickListener {
+	private ImageView mAddBtn,mCancelBtn;
+	private EditText mCivilianET,mSpyET;
+	private TextView mErrorMsgTv;
 	private ZYOnClickListener mListener;
 
-	public ConfirmDialog(Context context) {
-		super(context);
-	}
-
-	public ConfirmDialog(Context context, int layout, int theme) {
-		super(context, theme);
-		setContentView(layout);
+	public AddWordDialog(Context context) {
+		super(context, R.style.AddWordDialog);
+		setContentView(R.layout.dialog_add_word);
 		
-		mConfirmBtn = (ImageView) findViewById(R.id.btn_confirm);
+		mAddBtn = (ImageView) findViewById(R.id.btn_add);
 		mCancelBtn = (ImageView) findViewById(R.id.btn_cancel);
-		mConfirmBtn.setOnClickListener(this);
+		mAddBtn.setOnClickListener(this);
 		mCancelBtn.setOnClickListener(this);
+		
+		mCivilianET = (EditText) findViewById(R.id.et_civilian_word);
+		mSpyET = (EditText) findViewById(R.id.et_spy_word);
+		
+		mErrorMsgTv = (TextView) findViewById(R.id.tv_err_msg);
 		
 		//set window parmars
 		Window window = getWindow();
@@ -37,10 +40,8 @@ public class ConfirmDialog extends Dialog implements android.view.View.OnClickLi
 		
 		//get height & width
 		Display display = getWindow().getWindowManager().getDefaultDisplay();
-		int height = display.getHeight();
 		int width = display.getWidth();
 		
-//		params.height = (int) (height * 0.35);
 		params.height = LayoutParams.WRAP_CONTENT;
 		params.width = (int) (width * 0.8);
 		params.gravity = Gravity.CENTER;
@@ -48,7 +49,7 @@ public class ConfirmDialog extends Dialog implements android.view.View.OnClickLi
 		window.setAttributes(params);
 	}
 
-	public ConfirmDialog(Context context, boolean cancelable,
+	public AddWordDialog(Context context, boolean cancelable,
 			OnCancelListener cancelListener) {
 		super(context, cancelable, cancelListener);
 	}
@@ -66,5 +67,20 @@ public class ConfirmDialog extends Dialog implements android.view.View.OnClickLi
 		mListener.onClick(this, v);
 	}
 	
+	public String getCivilianWord(){
+		return mCivilianET.getText().toString().trim();
+	}
+	
+	public String getSpyWord(){
+		return mSpyET.getText().toString().trim();
+	}
+	
+	public void setErrorMsg(String msg){
+		mErrorMsgTv.setText(msg);
+	}
+	
+	public void setErrorMsg(int msgId){
+		mErrorMsgTv.setText(msgId);
+	}
 
 }

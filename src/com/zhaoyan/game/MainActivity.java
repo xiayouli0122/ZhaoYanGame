@@ -7,21 +7,16 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.zhaoyan.game.db.DBHelper;
-import com.zhaoyan.game.db.DbData;
 import com.zhaoyan.game.db.DbData.SpyColumns;
-import com.zhaoyan.game.util.Log;
 
 public class MainActivity extends BaseActivity implements OnClickListener {
 	private static final String TAG = "MainActivity";
 	private Button mStartBtn;
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +27,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		mStartBtn.setOnClickListener(this);
 		
 		//init db
-		//get dbHelper
-		DBHelper dbHelper = new DBHelper(getApplicationContext(), DbData.DATABASE_NAME,
-				null, DbData.DATABASE_VERSION);
-		// query db
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		Cursor cursor = db.query(SpyColumns.TABLE_NAME, null, null, null, null,
-				null, null);
+		Cursor cursor = getContentResolver().query(SpyColumns.CONTENT_URI, null, null, null, null);
 		
 		if (cursor != null && cursor.getCount() != 0) {
 			// there has data,do nothing
@@ -56,12 +45,11 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				values.put(SpyColumns.WORD1, words[i][0]);
 				values.put(SpyColumns.WORD2, words[i][1]);
 				values.put(SpyColumns.GROUP, 1);
-				db.insert(SpyColumns.TABLE_NAME, null, values);
+				getContentResolver().insert(SpyColumns.CONTENT_URI, values);
 			}
 			
 		}
 		cursor.close();
-		db.close();
 		
 		getSpyWords();
 	}

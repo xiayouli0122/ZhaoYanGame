@@ -55,6 +55,32 @@
              android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             >
          </activity>
+         
+         <activity
+             android:name="com.zhaoyan.game.spy.SpyMyWordManager"
+             android:screenOrientation="portrait"
+             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            >
+         </activity>
+         
+         <activity
+             android:name="com.zhaoyan.game.RuleHomeActivity"
+             android:screenOrientation="portrait"
+             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            >
+         </activity>
+         
+         <activity
+             android:name="com.zhaoyan.game.SpyRuleActivity"
+             android:screenOrientation="portrait"
+             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            >
+         </activity>
+         
+         <provider
+            android:name="com.zhaoyan.game.db.DbProvider"
+            android:authorities="com.zhaoyan.game.db.dbprovider" >
+        </provider>
     </application>
 
 </manifest>

@@ -41,7 +41,7 @@ public class IndexActivity extends BaseActivity implements OnClickListener {
 		mGamePunishView.setOnClickListener(this);
 		mWishView.setOnClickListener(this);
 
-		mBackBtn = (ImageView) findViewById(R.id.btn_back);
+		mBackBtn = (ImageView) findViewById(R.id.iv_index_btn_back);
 		mHelpBtn = (ImageView) findViewById(R.id.btn_help);
 
 		mBackBtn.setOnClickListener(this);
@@ -69,11 +69,11 @@ public class IndexActivity extends BaseActivity implements OnClickListener {
 		case R.id.game_wish:
 			showToast("game_wish");
 			break;
-		case R.id.btn_back:
+		case R.id.iv_rule_btn_back:
 			this.finish();
 			break;
 		case R.id.btn_help:
-			showToast("btn_help");
+			openActivity(RuleHomeActivity.class);
 			break;
 
 		default:

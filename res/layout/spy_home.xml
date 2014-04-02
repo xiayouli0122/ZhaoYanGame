@@ -345,7 +345,9 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/spy_drawable_video" />
+            android:src="@drawable/spy_drawable_video"
+            android:visibility="gone"
+             />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -6,10 +6,8 @@ import java.util.List;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -26,8 +24,6 @@ import android.widget.ToggleButton;
 
 import com.zhaoyan.game.BaseActivity;
 import com.zhaoyan.game.R;
-import com.zhaoyan.game.db.DBHelper;
-import com.zhaoyan.game.db.DbData;
 import com.zhaoyan.game.db.DbData.SpyColumns;
 import com.zhaoyan.game.dialog.ConfirmDialog;
 import com.zhaoyan.game.dialog.ConfirmDialog.ZYOnClickListener;
@@ -74,8 +70,6 @@ public class SpyGameActivity extends BaseActivity implements OnClickListener, On
 	
 	private SpyAvatarAdapter mAvatarAdapter;
 	
-	private DBHelper mDbHelper = null;
-	
 	private static final int INIT = 0;
 	private static final int START = 1;
 	private int mStatus = INIT;
@@ -119,8 +113,6 @@ public class SpyGameActivity extends BaseActivity implements OnClickListener, On
 					+ "word1:" + mWords[0] + ","
 					+ "word2:" + mWords[1]);
 		}
-		mDbHelper = new DBHelper(getApplicationContext(), DbData.DATABASE_NAME, null, DbData.DATABASE_VERSION);
-		
 		initView();
 		setGridViewParmars();
 		mAvatarAdapter = new SpyAvatarAdapter(getApplicationContext(), mPlayerList);
@@ -312,18 +304,15 @@ public class SpyGameActivity extends BaseActivity implements OnClickListener, On
 	}
 	
 	private boolean isWordExist(){
-		SQLiteDatabase db = mDbHelper.getReadableDatabase();
 		String selection = SpyColumns.WORD1 + "=?"
 				+ " and " + SpyColumns.GROUP + "=" + 0;
 		String[] selectionArgs = {mWords[0]};
-		Cursor cursor = db.query(SpyColumns.TABLE_NAME, 
-				null, selection, selectionArgs, null, null, null);
+		Cursor cursor = getContentResolver().query(SpyColumns.CONTENT_URI, null, selection, selectionArgs, null);
 		Log.d(TAG, "cursor:" + cursor + ",curso.count=" + cursor.getCount());
 		if (cursor == null || cursor.getCount() == 0) {
 			cursor.close();
 			return false;
 		} 
-		db.close();
 		return true;
 	}
 	
@@ -517,12 +506,11 @@ public class SpyGameActivity extends BaseActivity implements OnClickListener, On
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		SQLiteDatabase db = mDbHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(SpyColumns.WORD1, mWords[0]);
 		values.put(SpyColumns.WORD2, mWords[1]);
 		values.put(SpyColumns.GROUP, 0);
-		db.insert(SpyColumns.TABLE_NAME, null, values);
+		getContentResolver().insert(SpyColumns.CONTENT_URI, values);
 		mLikeTB.setChecked(false);
 		mLikeTB.setClickable(false);
 		showToast(getString(R.string.spy_add_to_myword));
@@ -530,7 +518,7 @@ public class SpyGameActivity extends BaseActivity implements OnClickListener, On
 	}
 	
 	private void showExitGameDialog(){
-		ConfirmDialog dialog = new ConfirmDialog(this, R.layout.dialog_confirm, R.style.MyDialog);
+		ConfirmDialog dialog = new ConfirmDialog(this, R.layout.dialog_confirm, R.style.Custom_Dialog);
 		dialog.setOnClickListener(new ZYOnClickListener() {
 			@Override
 			public void onClick(Dialog dialog, View view) {
